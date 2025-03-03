@@ -108,7 +108,8 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\x64\Debug\FidelityFX-CAS-CUDA.dll" "$(SolutionDir)x64\Debug\FidelityFX-CAS-CUDA-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)FidelityFX-CAS-CUDA.dll" "$(OutDir)FidelityFX-CAS-CUDA-GUI\" /y /D
+xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-GUI\kernels\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,7 +128,8 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\x64\Release\FidelityFX-CAS-CUDA.dll" "$(SolutionDir)x64\Release\FidelityFX-CAS-CUDA-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)FidelityFX-CAS-CUDA.dll" "$(OutDir)FidelityFX-CAS-CUDA-GUI\" /y /D
+xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-GUI\kernels\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release LineInfo|x64'">
@@ -136,7 +138,8 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\x64\Release LineInfo\FidelityFX-CAS-CUDA.dll" "$(SolutionDir)x64\Release LineInfo\FidelityFX-CAS-CUDA-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)FidelityFX-CAS-CUDA.dll" "$(OutDir)FidelityFX-CAS-CUDA-GUI\" /y /D
+xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-GUI\kernels\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">

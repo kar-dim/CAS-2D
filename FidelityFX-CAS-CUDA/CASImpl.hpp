@@ -1,5 +1,5 @@
 #pragma once
-#include <cuda_runtime.h>
+#include "opencl_init.hpp"
 
 enum CASMode 
 {
@@ -7,21 +7,30 @@ enum CASMode
 	INTERLEAVED_RGBA
 };
 
+struct dim2
+{
+	unsigned int rows;
+	unsigned int cols;
+};
+
 //Main class responsible for managing CUDA memory and calling the CAS kernel to sharpen the input image
 class CASImpl
 {
 private:
-	cudaTextureObject_t texObj;
-	cudaArray* texArray;
-	void* casOutputBuffer;
+	cl::Context context;
+	cl::CommandQueue queue;
+	cl::Device device;
+	cl::Image2D tex;
+	cl::Buffer casOutputBuffer;
+	cl::Buffer pinnedHostOutputBuffer;
+	cl::Program casProgram;
 	unsigned char* hostOutputBuffer;
 	bool hasAlpha;
 	unsigned int rows, cols;
 	unsigned long long totalBytes;
-	const dim3 blockSize { 16, 16 };
-
+	const dim2 localSize { 16, 16 };
+	dim2 texKernelDims { 0, 0 };
 	void initializeMemory();
-	void destroyBuffers();
 
 public:
 	CASImpl();

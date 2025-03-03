@@ -12,22 +12,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cuda_utils.cpp">
+    <ClCompile Include="CASLibWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CASLibWrapper.cpp">
+    <ClCompile Include="opencl_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CASImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cuda_utils.hpp">
+    <ClInclude Include="CASImpl.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CASImpl.cuh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CAS.cuh">
-      <Filter>Kernels</Filter>
     </ClInclude>
     <ClInclude Include="helper_math.h">
       <Filter>Header Files</Filter>
@@ -35,10 +32,16 @@
     <ClInclude Include="include\CASLibWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="opencl_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="opencl_init.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="CASImpl.cu">
-      <Filter>Source Files</Filter>
-    </CudaCompile>
+    <None Include="kernels\cas.cl">
+      <Filter>Kernels</Filter>
+    </None>
   </ItemGroup>
 </Project>

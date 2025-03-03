@@ -1,5 +1,5 @@
+#include "CASImpl.hpp"
 #include "include/CASLibWrapper.h"
-#include "CASImpl.cuh"
 
 //Implementation of the CAS DLL API
 extern "C" {
