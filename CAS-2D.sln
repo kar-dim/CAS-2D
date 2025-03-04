@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FidelityFX-CAS-CUDA", "FidelityFX-CAS-CUDA\FidelityFX-CAS-CUDA.vcxproj", "{B07DA219-FB43-432D-A0AA-43D7127E59CA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAS-2D-Lib", "CAS-2D-Lib\CAS-2D-Lib.vcxproj", "{B07DA219-FB43-432D-A0AA-43D7127E59CA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FidelityFX-CAS-CUDA-GUI", "FidelityFX-CAS-CUDA-GUI\FidelityFX-CAS-CUDA-GUI.vcxproj", "{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAS-2D-GUI", "CAS-2D-GUI\CAS-2D-GUI.vcxproj", "{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
