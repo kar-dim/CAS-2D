@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-const std::string cas = R"CLC(
+inline const std::string cas = R"CLC(
 
 #pragma OPENCL EXTENSION cl_khr_fp16 : enable
 
