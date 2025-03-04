@@ -26,9 +26,6 @@
     <ClInclude Include="CASImpl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="helper_math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\CASLibWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>

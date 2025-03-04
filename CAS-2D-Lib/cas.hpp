@@ -34,17 +34,6 @@ inline unsigned char floatToUchar(const float value)
 {
     return convert_uchar_sat_rte(value * 255.0f);
 }
-//convert an sRGB value to linear RGB value
-inline float sRGBtoLinear(const float r)
-{
-	return (r <= 0.04045f) ? (r / 12.92f) : pow((r + 0.055f) / 1.055f, 2.4f);
-}
-
-//convert an sRGB RGBA value to linear RGBA ("A" channel is passed as is)
-inline float4 sRGBAtoLinearRGBA(const float4 r)
-{
-	return (float4)(sRGBtoLinear(r.x), sRGBtoLinear(r.y), sRGBtoLinear(r.z), r.w);
-}
 
 //Convert a linear RGB value to sRGB value
 inline float sRGB(const float linearColor)

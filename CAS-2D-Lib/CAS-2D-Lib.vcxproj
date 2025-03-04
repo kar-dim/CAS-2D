@@ -156,7 +156,6 @@
   <ItemGroup>
     <ClInclude Include="cas.hpp" />
     <ClInclude Include="CASImpl.hpp" />
-    <ClInclude Include="helper_math.h" />
     <ClInclude Include="include\CASLibWrapper.h" />
     <ClInclude Include="opencl_init.hpp" />
     <ClInclude Include="opencl_utils.hpp" />
