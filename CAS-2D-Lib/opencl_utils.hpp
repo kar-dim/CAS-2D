@@ -33,8 +33,6 @@ namespace cl_utils
     //create OpenCL Queue, Device and Context
     cl::Context createOpenCLContext(cl::CommandQueue& queue, cl::Device& device);
 
-    //load an OpenCL kernel as string
-    std::string loadFileString(const std::string& input);
-
+    //builds the CAS kernel
     cl::Program buildCasKernel(cl::Context& context, cl::CommandQueue& queue, cl::Device& device);
 }

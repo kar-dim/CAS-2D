@@ -30,7 +30,9 @@ private:
 	unsigned long long totalBytes;
 	const dim2 localSize { 16, 16 };
 	dim2 texKernelDims { 0, 0 };
+
 	void initializeMemory();
+	void destroyPinnedMemory();
 
 public:
 	CASImpl();

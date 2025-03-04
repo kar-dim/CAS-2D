@@ -17,7 +17,7 @@ CASImpl::CASImpl() : casOutputBuffer(nullptr), hostOutputBuffer(nullptr), pinned
 //destructor, unmaps pinned memory, everything else is handled with RAII (cl::Buffers etc)
 CASImpl::~CASImpl()
 {
-	queue.enqueueUnmapMemObject(pinnedHostOutputBuffer, hostOutputBuffer);
+	destroyPinnedMemory();
 }
 
 //initialize buffers and texture data based on the provided image dimensions
@@ -36,14 +36,25 @@ void CASImpl::initializeMemory()
 //destory and re-initialize memory objects
 void CASImpl::reinitializeMemory(const bool hasAlpha, const unsigned char* hostRgbPtr, const unsigned int rows, const unsigned int cols)
 {
+	
 	this->rows = rows;
 	this->cols = cols;
 	this->hasAlpha = hasAlpha;
 	texKernelDims = { ALIGN_UP_16(rows), ALIGN_UP_16(cols) };
-	if (hostOutputBuffer != nullptr)
-		queue.enqueueUnmapMemObject(pinnedHostOutputBuffer, hostOutputBuffer);
+	destroyPinnedMemory();
 	initializeMemory();
 	cl_utils::copyBufferToImage(queue, tex, hostRgbPtr, rows, cols);
+}
+
+//destroys the host pinned buffer only if it is not already mapped
+void CASImpl::destroyPinnedMemory() 
+{
+	if (hostOutputBuffer != nullptr) 
+	{
+		queue.enqueueUnmapMemObject(pinnedHostOutputBuffer, hostOutputBuffer);
+		queue.finish();
+		hostOutputBuffer = nullptr;
+	}
 }
 
 //calls CAS kernel on the texture data, return sharpened image as unsigned char buffer (pinned memory of this CAS instance)

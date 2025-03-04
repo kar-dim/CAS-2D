@@ -154,6 +154,7 @@
     <ClCompile Include="opencl_utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cas.hpp" />
     <ClInclude Include="CASImpl.hpp" />
     <ClInclude Include="helper_math.h" />
     <ClInclude Include="include\CASLibWrapper.h" />
@@ -162,9 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CASImpl.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="kernels\cas.cl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

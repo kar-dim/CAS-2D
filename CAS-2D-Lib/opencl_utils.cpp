@@ -1,7 +1,7 @@
 #include "opencl_utils.hpp"
+#include "cas.hpp"
 #include <exception>
 #include <fstream>
-
 #include <iterator>
 #include <stdexcept>
 #include <string>
@@ -79,21 +79,13 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
     }
 }
 
-string cl_utils::loadFileString(const string& input)
-{
-    std::ifstream stream(input.c_str());
-    if (!stream.is_open())
-        throw std::runtime_error("Could not load Program: " + input + "\n");
-    return string(std::istreambuf_iterator<char>(stream), (std::istreambuf_iterator<char>()));
-}
-
 cl::Program cl_utils::buildCasKernel(cl::Context& context, cl::CommandQueue& queue, cl::Device& device)
 {
     //compile opencl kernel
     cl::Program casKernel;
     try {
         const string options = "-cl-mad-enable";
-        casKernel = cl::Program(context, cl_utils::loadFileString("../FidelityFX-CAS-CUDA/kernels/cas.cl"));
+        casKernel = cl::Program(context, cas);
         casKernel.build(device, options.c_str());
     }
     catch (const std::exception& ex) {
