@@ -18,6 +18,7 @@
     <ProjectGuid>{B07DA219-FB43-432D-A0AA-43D7127E59CA}</ProjectGuid>
     <RootNamespace>FidelityFX_CAS_CUDA</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CAS-2D-Lib</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

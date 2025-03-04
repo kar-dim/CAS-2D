@@ -2,6 +2,7 @@
 #include "opencl_init.hpp"
 #include "opencl_utils.hpp"
 #include <stdexcept>
+#include <string>
 
 #define ALIGN_UP_16(x) (x + 15) & ~15
 
@@ -22,13 +23,13 @@ CASImpl::~CASImpl()
 //initialize buffers and texture data based on the provided image dimensions
 void CASImpl::initializeMemory()
 {
-	totalBytes = rows * cols * (hasAlpha ? sizeof(cl_uchar4) : sizeof(cl_uchar3));
+	//note: sizeof(cl_uchar) * 3 is not equal to sizeof(cl_uchar3), cl_uchar3 is 4 bytes aligned like cl_uchar4
+	totalBytes = rows * cols * (hasAlpha ? sizeof(cl_uchar4) : sizeof(cl_uchar) * 3);
 	//initialize CAS output buffers and pinned memory for output
 	casOutputBuffer = cl::Buffer(context, CL_MEM_READ_WRITE, totalBytes);
 	pinnedHostOutputBuffer = cl::Buffer(context, CL_MEM_READ_WRITE | CL_MEM_ALLOC_HOST_PTR, totalBytes);
-	hostOutputBuffer = (unsigned char *)queue.enqueueMapBuffer(pinnedHostOutputBuffer, CL_TRUE, CL_MAP_WRITE, 0, totalBytes);
+	hostOutputBuffer = (unsigned char *)queue.enqueueMapBuffer(pinnedHostOutputBuffer, CL_TRUE, CL_MAP_WRITE | CL_MAP_READ, 0, totalBytes);
 	//initialize texture
-	//TODO: fix it to sample 4 cl_uchar instead of CL_FLOAT. Also to be SRGB!
 	tex = cl::Image2D(context, CL_MEM_READ_ONLY, cl::ImageFormat(CL_sRGBA, CL_UNORM_INT8), cols, rows, 0, NULL);
 }
 
@@ -39,7 +40,8 @@ void CASImpl::reinitializeMemory(const bool hasAlpha, const unsigned char* hostR
 	this->cols = cols;
 	this->hasAlpha = hasAlpha;
 	texKernelDims = { ALIGN_UP_16(rows), ALIGN_UP_16(cols) };
-	queue.enqueueUnmapMemObject(pinnedHostOutputBuffer, hostOutputBuffer);
+	if (hostOutputBuffer != nullptr)
+		queue.enqueueUnmapMemObject(pinnedHostOutputBuffer, hostOutputBuffer);
 	initializeMemory();
 	cl_utils::copyBufferToImage(queue, tex, hostRgbPtr, rows, cols);
 }
@@ -62,8 +64,8 @@ const unsigned char* CASImpl::sharpenImage(const int casMode, const float sharpe
 	//execute kernel
 	try {
 		queue.enqueueNDRangeKernel(
-			cl_utils::KernelBuilder(casProgram, "cas").args(tex, sharpenStrength, contrastAdaption, casOutputBuffer).build(),
-			cl::NDRange(), cl::NDRange(texKernelDims.rows, texKernelDims.cols), cl::NDRange(16, 16));
+			cl_utils::KernelBuilder(casProgram, "cas").args(tex, (int)hasAlpha, casMode, sharpenStrength, contrastAdaption, casOutputBuffer).build(),
+			cl::NDRange(), cl::NDRange(texKernelDims.cols, texKernelDims.rows), cl::NDRange(16, 16));
 		queue.finish();
 		//copy from GPU to HOST
 		queue.enqueueReadBuffer(casOutputBuffer, CL_TRUE, 0, totalBytes, hostOutputBuffer);

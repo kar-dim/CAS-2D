@@ -1,7 +1,8 @@
 #include "opencl_utils.hpp"
 #include <exception>
 #include <fstream>
-#include <iostream>
+
+#include <iterator>
 #include <stdexcept>
 #include <string>
 
@@ -52,9 +53,9 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
             std::vector<cl::Device> devices;
             platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
 
-            for (const auto& device : devices) {
+            for (const auto& device : devices) 
+            {
                 int score = cl_utils::calculateDeviceScore(device);
-                std::cout << "Device: " << device.getInfo<CL_DEVICE_NAME>() << " (Score: " << score << ")\n";
                 if (score > bestScore) 
                 {
                     bestScore = score;
@@ -65,7 +66,6 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
 
         if (bestScore == -1) 
             throw std::runtime_error("No suitable OpenCL devices found.");
-        std::cout << "Selected fastest device: " << bestDevice.getInfo<CL_DEVICE_NAME>() << "\n";
 
         // Create context and queue for the fastest device
         cl::Context context(bestDevice);
@@ -73,10 +73,9 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
         device = bestDevice;
         return context;
     }
-    catch (const cl::Error& err) 
+    catch (const cl::Error& ex) 
     {
-        std::cout << "OpenCL Error: " << err.what() << " (" << err.err() << ")\n";
-        throw;
+        throw ex;
     }
 }
 
@@ -94,17 +93,10 @@ cl::Program cl_utils::buildCasKernel(cl::Context& context, cl::CommandQueue& que
     cl::Program casKernel;
     try {
         const string options = "-cl-mad-enable";
-        casKernel = cl::Program(context, cl_utils::loadFileString("kernels/cas.cl"));
+        casKernel = cl::Program(context, cl_utils::loadFileString("../FidelityFX-CAS-CUDA/kernels/cas.cl"));
         casKernel.build(device, options.c_str());
     }
-    catch (const cl::Error& e) {
-        std::cout << "Could not build a kernel, Reason: " << e.what() << "\n\n";
-        if (casKernel.get() != NULL && casKernel.getBuildInfo<CL_PROGRAM_BUILD_STATUS>(device) != CL_BUILD_SUCCESS)
-            std::cout << casKernel.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device) << "\n";
-        throw e;
-    }
     catch (const std::exception& ex) {
-        std::cout << ex.what() << "\n";
         throw ex;
     }
     return casKernel;

@@ -21,6 +21,7 @@
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)'=='Release LineInfo|x64'">10.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+    <ProjectName>CAS-2D-GUI</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -51,7 +52,7 @@
     <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
-    <QtDeployDir>@(_-->'%(OutDir)FidelityFX-CAS-CUDA-GUI')</QtDeployDir>
+    <QtDeployDir>@(_-->'%(OutDir)CAS-2D-GUI')</QtDeployDir>
     <QtDeployDebugRelease>debug</QtDeployDebugRelease>
     <QtDeploy>true</QtDeploy>
     <QtDeployCopyFiles>true</QtDeployCopyFiles>
@@ -61,7 +62,7 @@
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
-    <QtDeployDir>@(_-->'%(OutDir)FidelityFX-CAS-CUDA-GUI')</QtDeployDir>
+    <QtDeployDir>@(_-->'%(OutDir)CAS-2D-GUI')</QtDeployDir>
     <QtDeployDebugRelease>release</QtDeployDebugRelease>
     <QtDeployCopyFiles>true</QtDeployCopyFiles>
   </PropertyGroup>
@@ -70,7 +71,7 @@
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
-    <QtDeployDir>@(_-->'%(OutDir)FidelityFX-CAS-CUDA-GUI')</QtDeployDir>
+    <QtDeployDir>@(_-->'%(OutDir)CAS-2D-GUI')</QtDeployDir>
     <QtDeployDebugRelease>release</QtDeployDebugRelease>
     <QtDeployCopyFiles>true</QtDeployCopyFiles>
   </PropertyGroup>
@@ -108,8 +109,8 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)FidelityFX-CAS-CUDA.dll" "$(OutDir)FidelityFX-CAS-CUDA-GUI\" /y /D
-xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-GUI\kernels\" /y /D</Command>
+      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D
+xcopy "$(SolutionDir)CAS-2D-Lib\kernels" "$(OutDir)CAS-2D-GUI\kernels\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -128,8 +129,8 @@ xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)FidelityFX-CAS-CUDA.dll" "$(OutDir)FidelityFX-CAS-CUDA-GUI\" /y /D
-xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-GUI\kernels\" /y /D</Command>
+      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D
+xcopy "$(SolutionDir)CAS-2D-Lib\kernels" "$(OutDir)CAS-2D-GUI\kernels\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release LineInfo|x64'">
@@ -138,8 +139,8 @@ xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)FidelityFX-CAS-CUDA.dll" "$(OutDir)FidelityFX-CAS-CUDA-GUI\" /y /D
-xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-GUI\kernels\" /y /D</Command>
+      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D
+xcopy "$(SolutionDir)CAS-2D-Lib\kernels" "$(OutDir)CAS-2D-GUI\kernels\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -201,12 +202,12 @@ xcopy "$(SolutionDir)FidelityFX-CAS-CUDA\kernels" "$(OutDir)FidelityFX-CAS-CUDA-
     <ClInclude Include="ZoomableLabel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FidelityFX-CAS-CUDA\FidelityFX-CAS-CUDA.vcxproj">
-      <Project>{b07da219-fb43-432d-a0aa-43d7127e59ca}</Project>
-    </ProjectReference>
+    <ResourceCompile Include="resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources.rc" />
+    <ProjectReference Include="..\CAS-2D-Lib\CAS-2D-Lib.vcxproj">
+      <Project>{b07da219-fb43-432d-a0aa-43d7127e59ca}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
