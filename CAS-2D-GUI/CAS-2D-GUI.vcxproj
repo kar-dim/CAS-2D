@@ -108,7 +108,7 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\x64\Debug\CAS-2D-Lib.dll" "$(SolutionDir)x64\Debug\CAS-2D-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,7 +127,7 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\x64\Release\CAS-2D-Lib.dll" "$(SolutionDir)x64\Release\CAS-2D-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release LineInfo|x64'">
@@ -136,7 +136,7 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\x64\Release LineInfo\CAS-2D-Lib.dll" "$(SolutionDir)x64\Release LineInfo\CAS-2D-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
