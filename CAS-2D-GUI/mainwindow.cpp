@@ -4,7 +4,6 @@
 #include <functional>
 #include <QApplication>
 #include <QFileDialog>
-#include <QFileDialog>
 #include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QImage>
