@@ -193,7 +193,7 @@ void MainWindow::sliderValueChanged()
     if (sharpenStrength->value() <= 0.001 || contrastAdaption->value() <= 0.001)
         return;
 
-    //apply CAS CUDA from DLL and update UI
+    //apply CAS OpenCL from DLL and update UI
     const int sharpenedImageChannels = userImageHasAlpha ? 4 : 3;
     const auto sharpenedImageFormat = userImageHasAlpha ? QImage::Format_RGBA8888 : QImage::Format_RGB888;
     const uchar* casData = CAS_sharpenImage(casObj, 1, CLAMP(sharpenStrength->value()), CLAMP(contrastAdaption->value()));

@@ -13,7 +13,7 @@ struct dim2
 	unsigned int cols;
 };
 
-//Main class responsible for managing CUDA memory and calling the CAS kernel to sharpen the input image
+//Main class responsible for managing OpenCL memory and calling the CAS kernel to sharpen the input image
 class CASImpl
 {
 private:

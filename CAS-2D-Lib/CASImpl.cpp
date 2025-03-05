@@ -61,17 +61,6 @@ void CASImpl::destroyPinnedMemory()
 //overloaded method to be used when the texture data is already set (get away with one Host to Device copy if we want to sharpen the same image)
 const unsigned char* CASImpl::sharpenImage(const int casMode, const float sharpenStrength, const float contrastAdaption)
 {
-	//const dim3 gridSize = cuda_utils::gridSizeCalculate(blockSize, rows, cols);
-	////enqueue CAS kernel with Alpha channel output or not, or RGB planar or interleaved output based on param casMode
-	//if (hasAlpha && casMode == PLANAR_RGB)
-	//	cas <unsigned char, true, PLANAR_RGB> << <gridSize, blockSize >> > (texObj, sharpenStrength, contrastAdaption, reinterpret_cast<unsigned char*>(casOutputBuffer), rows, cols);
-	//else if (hasAlpha && casMode == INTERLEAVED_RGBA)
-	//	cas <uchar4, true, INTERLEAVED_RGBA> << <gridSize, blockSize >> > (texObj, sharpenStrength, contrastAdaption, reinterpret_cast<uchar4*>(casOutputBuffer), rows, cols);
-	//else if (!hasAlpha && casMode == PLANAR_RGB)
-	//	cas <unsigned char, false, PLANAR_RGB> << <gridSize, blockSize >> > (texObj, sharpenStrength, contrastAdaption, reinterpret_cast<unsigned char*>(casOutputBuffer), rows, cols);
-	//else
-	//	cas <uchar3, false, INTERLEAVED_RGBA> << <gridSize, blockSize >> > (texObj, sharpenStrength, contrastAdaption, reinterpret_cast<uchar3*>(casOutputBuffer), rows, cols);
-
 	//execute kernel
 	try {
 		queue.enqueueNDRangeKernel(
