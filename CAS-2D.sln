@@ -11,6 +11,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
+		StartupProject = CAS-2D-GUI
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.Debug|x64.ActiveCfg = Debug|x64
