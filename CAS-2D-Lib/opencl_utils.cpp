@@ -1,12 +1,13 @@
-#include "opencl_utils.hpp"
 #include "cas.hpp"
+#include "opencl_init.hpp"
+#include "opencl_utils.hpp"
 #include <exception>
-#include <fstream>
-#include <iterator>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 using std::string;
+#define ULONG(x) static_cast<unsigned long>(x)
 
 cl_utils::KernelBuilder::KernelBuilder(const cl::Program& program, const char* name)
 {
@@ -26,13 +27,20 @@ void cl_utils::copyBufferToImage(const cl::CommandQueue& queue, const cl::Image2
     queue.enqueueWriteImage(image2d, CL_TRUE, orig, des, 0, 0, hostRgbPtr);
 }
 
-int cl_utils::calculateDeviceScore(const cl::Device& device)
+unsigned long cl_utils::calculateDeviceScore(const cl::Device& device)
 {
-    int score = 0;
-    score += device.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>() * 100;
-    score += device.getInfo<CL_DEVICE_MAX_CLOCK_FREQUENCY>() * 10;
-    score += static_cast<int>(device.getInfo<CL_DEVICE_GLOBAL_MEM_SIZE>() / (1024 * 1024 * 1024)); // GB
-    score += static_cast<int>(device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>() / 1024);  // KB
+    unsigned long score = 0;
+    //Core hardware properties
+    score += ULONG(device.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>() * 200);
+    score += ULONG(device.getInfo<CL_DEVICE_MAX_CLOCK_FREQUENCY>() * 10);
+    score += ULONG(device.getInfo<CL_DEVICE_GLOBAL_MEM_SIZE>() / (1024 * 1024 * 256)); //256 MB chunks
+    score += ULONG(device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>() / 1024); //Local memory in KB
+    // Image2D (texture) support
+    score += ULONG(device.getInfo<CL_DEVICE_IMAGE2D_MAX_WIDTH>() / 512);
+    score += ULONG(device.getInfo<CL_DEVICE_IMAGE2D_MAX_HEIGHT>() / 512);
+    // Memory cache
+    score += ULONG(device.getInfo<CL_DEVICE_GLOBAL_MEM_CACHE_SIZE>() / (1024 * 64)); // 64 KB chunks
+    score += ULONG(device.getInfo<CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE>());
     return score;
 }
 
@@ -45,7 +53,7 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
             throw std::runtime_error("No OpenCL platforms found.");
 
         cl::Device bestDevice;
-        int bestScore = -1;
+        unsigned long bestScore = 0;
 
         // Iterate through all platforms and devices
         for (const auto& platform : platforms) 
@@ -55,7 +63,7 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
 
             for (const auto& device : devices) 
             {
-                int score = cl_utils::calculateDeviceScore(device);
+                auto score = cl_utils::calculateDeviceScore(device);
                 if (score > bestScore) 
                 {
                     bestScore = score;
@@ -64,7 +72,7 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
             }
         }
 
-        if (bestScore == -1) 
+        if (bestScore == 0) 
             throw std::runtime_error("No suitable OpenCL devices found.");
 
         // Create context and queue for the fastest device
@@ -84,9 +92,8 @@ cl::Program cl_utils::buildCasKernel(cl::Context& context, cl::CommandQueue& que
     //compile opencl kernel
     cl::Program casKernel;
     try {
-        const string options = "-cl-mad-enable";
         casKernel = cl::Program(context, cas);
-        casKernel.build(device, options.c_str());
+        casKernel.build(device, "-cl-mad-enable");
     }
     catch (const std::exception& ex) {
         throw ex;

@@ -1,6 +1,5 @@
 #pragma once
 #include "opencl_init.hpp"
-#include <string>
 
 namespace cl_utils
 {
@@ -28,7 +27,7 @@ namespace cl_utils
     void copyBufferToImage(const cl::CommandQueue& queue, const cl::Image2D& image2d, const unsigned char* hostRgbPtr, const long long rows, const long long cols);
 
     //find the fastes opencl device on the system based on various metrics
-    int calculateDeviceScore(const cl::Device& device);
+    unsigned long calculateDeviceScore(const cl::Device& device);
 
     //create OpenCL Queue, Device and Context
     cl::Context createOpenCLContext(cl::CommandQueue& queue, cl::Device& device);
