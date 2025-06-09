@@ -9,26 +9,33 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAS-2D-GUI", "CAS-2D-GUI\CA
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Release LineInfo|x64 = Release LineInfo|x64
-		Release|x64 = Release|x64
-		StartupProject = CAS-2D-GUI
+		CUDA_Debug|x64 = CUDA_Debug|x64
+		CUDA_Release|x64 = CUDA_Release|x64
+		OPENCL_Debug|x64 = OPENCL_Debug|x64
+		OPENCL_Release|x64 = OPENCL_Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.Debug|x64.ActiveCfg = Debug|x64
-		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.Debug|x64.Build.0 = Debug|x64
-		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.Release LineInfo|x64.ActiveCfg = Release LineInfo|x64
-		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.Release LineInfo|x64.Build.0 = Release LineInfo|x64
-		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.Release|x64.ActiveCfg = Release|x64
-		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.Release|x64.Build.0 = Release|x64
-		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.Debug|x64.ActiveCfg = Debug|x64
-		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.Debug|x64.Build.0 = Debug|x64
-		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.Release LineInfo|x64.ActiveCfg = Release LineInfo|x64
-		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.Release LineInfo|x64.Build.0 = Release LineInfo|x64
-		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.Release|x64.ActiveCfg = Release|x64
-		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.Release|x64.Build.0 = Release|x64
+		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.CUDA_Debug|x64.ActiveCfg = CUDA_Debug|x64
+		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.CUDA_Debug|x64.Build.0 = CUDA_Debug|x64
+		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.CUDA_Release|x64.ActiveCfg = CUDA_Release|x64
+		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.CUDA_Release|x64.Build.0 = CUDA_Release|x64
+		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.OPENCL_Debug|x64.ActiveCfg = OPENCL_Debug|x64
+		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.OPENCL_Debug|x64.Build.0 = OPENCL_Debug|x64
+		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.OPENCL_Release|x64.ActiveCfg = OPENCL_Release|x64
+		{B07DA219-FB43-432D-A0AA-43D7127E59CA}.OPENCL_Release|x64.Build.0 = OPENCL_Release|x64
+		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.CUDA_Debug|x64.ActiveCfg = CUDA_Debug|x64
+		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.CUDA_Debug|x64.Build.0 = CUDA_Debug|x64
+		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.CUDA_Release|x64.ActiveCfg = CUDA_Release|x64
+		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.CUDA_Release|x64.Build.0 = CUDA_Release|x64
+		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.OPENCL_Debug|x64.ActiveCfg = OPENCL_Debug|x64
+		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.OPENCL_Debug|x64.Build.0 = OPENCL_Debug|x64
+		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.OPENCL_Release|x64.ActiveCfg = OPENCL_Release|x64
+		{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}.OPENCL_Release|x64.Build.0 = OPENCL_Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7EADAF8-D479-4D69-86AC-7F703ED1D72B}
 	EndGlobalSection
 EndGlobal

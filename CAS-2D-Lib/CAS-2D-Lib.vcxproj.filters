@@ -7,38 +7,65 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{354de4ce-c746-42af-9db4-c71d9a69421c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Kernels">
-      <UniqueIdentifier>{74722a70-86a7-40ca-a431-ad0e8d2e8f97}</UniqueIdentifier>
+    <Filter Include="Header Files\cuda">
+      <UniqueIdentifier>{e9091985-2acf-4387-946e-767a5af4d1da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cuda">
+      <UniqueIdentifier>{a86b9bbe-d3d6-4c05-afe9-efb344b45ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opencl">
+      <UniqueIdentifier>{12a0d499-9521-40a4-873b-be4512dc6b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\opencl">
+      <UniqueIdentifier>{a1a6afef-b7ca-414d-8f36-f212073ed172}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cuda_utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CASLibWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cuda_utils.cpp">
+      <Filter>Source Files\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="CASImpl.cpp">
+      <Filter>Source Files\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="opencl_utils.cpp">
+      <Filter>Source Files\opencl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cuda_utils.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="helper_math.h">
+      <Filter>Header Files\cuda</Filter>
     </ClInclude>
     <ClInclude Include="CASImpl.cuh">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\cuda</Filter>
     </ClInclude>
-    <ClInclude Include="CAS.cuh">
-      <Filter>Kernels</Filter>
-    </ClInclude>
-    <ClInclude Include="helper_math.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="cuda_utils.hpp">
+      <Filter>Header Files\cuda</Filter>
     </ClInclude>
     <ClInclude Include="include\CASLibWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CAS.cuh">
+      <Filter>Header Files\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="CAS.hpp">
+      <Filter>Header Files\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="CASImpl.hpp">
+      <Filter>Header Files\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="opencl_init.hpp">
+      <Filter>Header Files\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="opencl_utils.hpp">
+      <Filter>Header Files\opencl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="CASImpl.cu">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cuda</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>
