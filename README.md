@@ -15,7 +15,7 @@ It is used in 3D Graphics frameworks like DX12 and Vulkan, and provides a mixed 
   <img src="https://github.com/user-attachments/assets/e92fc01d-50cd-4ab0-ba97-b51e57be47a0" width="33%">
 </p>
 
-This project implements CAS as a [CUDA](https://github.com/kar-dim/CAS-2D) or [OpenCL](https://github.com/kar-dim/CAS-2D/tree/opencl) kernel. Each branch contains the relevant implementation. The main reasons for porting CAS to these compute frameworks are:
+This project implements CAS as compute kernel, CUDA and OpenCL. The main reasons for porting CAS to these compute frameworks are:
 1. General purpose. Because CAS is technically a filter, it can also be used for sharpening static images (like local files from disk). The original CAS filter works only in 3D graphics frameworks.
 2. Speed. By implementing the CAS algorithm efficiently in Compute frameworks, we can expect major speedups compared to CPU implementations by leveraging the GPU's high performance in parallel problems.
 
@@ -27,7 +27,16 @@ This project implements CAS as a [CUDA](https://github.com/kar-dim/CAS-2D) or [O
 ## Build
 
 The projects are included in a Visual Studio Solution (```.sln```).
-1. For the CUDA CAS DLL Implementation, CUDA Toolkit (tested with version 12.6) is required, in order to link with the CUDA libraries and to include the CUDA header files.
+The solution provides multiple build configurations, each targeting a specific backend:
+
+| Configuration    | Backend     | Notes                                       |
+|------------------|-------------|---------------------------------------------|
+| `OPENCL_Release` | OpenCL      | Most recommended backend with very high performance. |
+| `OPENCL_Debug`   | OpenCL      | Most recommended backend with very high performance (debug build). |
+| `CUDA_Release`   | CUDA        | CUDA backend. Slightly faster than OpenCL, but works only for NVIDIA GPUs. |
+| `CUDA_Debug`     | CUDA        | CUDA backend. Slightly faster than OpenCL, but works only for NVIDIA GPUs (debug build). |
+
+1. For the CUDA CAS DLL Implementation, CUDA Toolkit (tested with version 12.9) is required, in order to link with the CUDA libraries and to include the CUDA header files.
 2. For the OpenCL CAS DLL Implementation, the relevant [OpenCL Headers](https://github.com/KhronosGroup/OpenCL-Headers), [OpenCL C++ Bindings](https://github.com/KhronosGroup/OpenCL-CLHPP) and [OpenCL Library file](https://github.com/KhronosGroup/OpenCL-SDK) are already included and configured for this project.
    - **NOTE**: Because there may be more than one devices that support OpenCL, the DLL automatically tries to guess the faster device based on some device characteristics.
 3. The Qt GUI application requires Qt MSVC (tested with version 6.8.0) in order to use the Qt framework.
