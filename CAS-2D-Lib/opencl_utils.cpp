@@ -30,17 +30,20 @@ void cl_utils::copyBufferToImage(const cl::CommandQueue& queue, const cl::Image2
 unsigned long cl_utils::calculateDeviceScore(const cl::Device& device)
 {
     unsigned long score = 0;
+    if (!device.getInfo<CL_DEVICE_IMAGE_SUPPORT>())
+        return 0; // skip device if image2D not supported!
+
     //Core hardware properties
     score += ULONG(device.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>() * 200);
     score += ULONG(device.getInfo<CL_DEVICE_MAX_CLOCK_FREQUENCY>() * 10);
-    score += ULONG(device.getInfo<CL_DEVICE_GLOBAL_MEM_SIZE>() / (1024 * 1024 * 256)); //256 MB chunks
-    score += ULONG(device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>() / 1024); //Local memory in KB
+    score += ULONG((device.getInfo<CL_DEVICE_GLOBAL_MEM_SIZE>() / (256 * 1024 * 1024)) * 5);
+    score += ULONG((device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>() / 1024) * 10);
     // Image2D (texture) support
     score += ULONG(device.getInfo<CL_DEVICE_IMAGE2D_MAX_WIDTH>() / 512);
     score += ULONG(device.getInfo<CL_DEVICE_IMAGE2D_MAX_HEIGHT>() / 512);
     // Memory cache
-    score += ULONG(device.getInfo<CL_DEVICE_GLOBAL_MEM_CACHE_SIZE>() / (1024 * 64)); // 64 KB chunks
-    score += ULONG(device.getInfo<CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE>());
+    score += ULONG(device.getInfo<CL_DEVICE_GLOBAL_MEM_CACHE_SIZE>() / (1024 * 64) * 2); // 64 KB chunks
+    score += ULONG(device.getInfo<CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE>() / 4);
     return score;
 }
 
@@ -63,7 +66,7 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
 
             for (const auto& device : devices) 
             {
-                auto score = cl_utils::calculateDeviceScore(device);
+                const auto score = cl_utils::calculateDeviceScore(device);
                 if (score > bestScore) 
                 {
                     bestScore = score;

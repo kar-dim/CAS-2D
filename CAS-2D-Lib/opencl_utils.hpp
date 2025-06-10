@@ -26,7 +26,7 @@ namespace cl_utils
     //helper method to copy host pinned memory into an OpenCL Image
     void copyBufferToImage(const cl::CommandQueue& queue, const cl::Image2D& image2d, const unsigned char* hostRgbPtr, const long long rows, const long long cols);
 
-    //find the fastes opencl device on the system based on various metrics
+    //calculate a device's performance based on some standard metrics
     unsigned long calculateDeviceScore(const cl::Device& device);
 
     //create OpenCL Queue, Device and Context
