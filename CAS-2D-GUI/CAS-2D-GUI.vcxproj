@@ -134,6 +134,7 @@
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)CAS-2D-Lib/include</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
@@ -143,6 +144,7 @@
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)CAS-2D-Lib/include</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
@@ -162,6 +164,7 @@
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)CAS-2D-Lib/include</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
@@ -171,6 +174,7 @@
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)CAS-2D-Lib/include</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>

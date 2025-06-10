@@ -1,4 +1,4 @@
-#include "..\CAS-2D-Lib\include\CASLibWrapper.h"
+#include "CASLibWrapper.h"
 #include "mainwindow.h"
 #include "widget_utils.hpp"
 #include <functional>
