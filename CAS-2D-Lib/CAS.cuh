@@ -16,7 +16,7 @@
 //		 height: height of the input texture
 //		 width: width of the input texture
 //Output: None
-template <class T, const bool hasAlpha, const int casMode>
+template <class T, bool hasAlpha, int casMode>
 __global__ void cas(cudaTextureObject_t texObj, const float sharpenStrength, const float contrastAdaption, T* casOutput, const unsigned int height, const unsigned int width)
 {
 	const int x = blockIdx.x * blockDim.x + threadIdx.x;

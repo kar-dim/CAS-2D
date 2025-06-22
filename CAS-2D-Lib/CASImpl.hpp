@@ -21,8 +21,7 @@ private:
 	cl::CommandQueue queue;
 	cl::Device device;
 	cl::Image2D tex;
-	cl::Buffer casOutputBuffer;
-	cl::Buffer pinnedHostOutputBuffer;
+	cl::Buffer casOutputBuffer, pinnedHostOutputBuffer;
 	cl::Program casProgram;
 	unsigned char* hostOutputBuffer;
 	bool hasAlpha;
