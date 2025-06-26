@@ -24,12 +24,12 @@ inline float3 fmin3(float3 a, float3 b)
 	return (float3)(min(a.x, b.x), min(a.y, b.y), min(a.z, b.z));
 }
 
-//converts a float in the range [0,1] to an unsigned char in the range [0,255]
 inline float3 make_float3(const float4 values)
 {
 	return (float3)(values.x, values.y, values.z);
 }
 
+//converts a float in the range [0,1] to an unsigned char in the range [0,255]
 inline unsigned char floatToUchar(const float value)
 {
     return convert_uchar_sat_rte(value * 255.0f);
