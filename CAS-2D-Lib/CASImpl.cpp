@@ -7,12 +7,9 @@
 #define ALIGN_UP_16(x) (x + 15) & ~15
 
 //initialize empty CAS instance
-CASImpl::CASImpl() : casOutputBuffer(nullptr), hostOutputBuffer(nullptr), pinnedHostOutputBuffer(nullptr), hasAlpha(false), rows(0), cols(0), totalBytes(0)
-{ 
-	context = cl_utils::createOpenCLContext(queue, device);
-	//build kernel
-	casProgram = cl_utils::buildCasKernel(context, queue, device);
-}
+CASImpl::CASImpl() : casOutputBuffer(nullptr), hostOutputBuffer(nullptr), pinnedHostOutputBuffer(nullptr), hasAlpha(false), 
+rows(0), cols(0), totalBytes(0), context(cl_utils::createOpenCLContext(queue, device)), casProgram(cl_utils::buildCasKernel(context, queue, device))
+{ }
 
 //destructor, unmaps pinned memory, everything else is handled with RAII (cl::Buffers etc)
 CASImpl::~CASImpl()

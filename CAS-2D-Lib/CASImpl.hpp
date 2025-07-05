@@ -17,16 +17,16 @@ struct dim2
 class CASImpl
 {
 private:
-	cl::Context context;
-	cl::CommandQueue queue;
-	cl::Device device;
 	cl::Image2D tex;
 	cl::Buffer casOutputBuffer, pinnedHostOutputBuffer;
-	cl::Program casProgram;
 	unsigned char* hostOutputBuffer;
 	bool hasAlpha;
 	unsigned int rows, cols;
 	unsigned long long totalBytes;
+	cl::CommandQueue queue;
+	cl::Device device;
+	cl::Context context;
+	cl::Program casProgram;
 	const dim2 localSize { 16, 16 };
 	dim2 texKernelDims { 0, 0 };
 
