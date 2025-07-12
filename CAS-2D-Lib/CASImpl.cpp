@@ -4,8 +4,6 @@
 #include <stdexcept>
 #include <string>
 
-#define ALIGN_UP_16(x) (x + 15) & ~15
-
 //initialize empty CAS instance
 CASImpl::CASImpl() : casOutputBuffer(nullptr), hostOutputBuffer(nullptr), pinnedHostOutputBuffer(nullptr), hasAlpha(false), 
 rows(0), cols(0), totalBytes(0), context(cl_utils::createOpenCLContext(queue, device)), casProgram(cl_utils::buildCasKernel(context, queue, device))
@@ -37,7 +35,7 @@ void CASImpl::reinitializeMemory(const bool hasAlpha, const unsigned char* hostR
 	this->rows = rows;
 	this->cols = cols;
 	this->hasAlpha = hasAlpha;
-	texKernelDims = { ALIGN_UP_16(rows), ALIGN_UP_16(cols) };
+	texKernelDims = { align<16>(rows), align<16>(cols) };
 	destroyPinnedMemory();
 	initializeMemory();
 	cl_utils::copyBufferToImage(queue, tex, hostRgbPtr, rows, cols);

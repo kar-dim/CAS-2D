@@ -3,8 +3,8 @@
 #include <cuda_fp16.h>
 #include "helper_math.h"
 
-#define RGB 0
-#define RGBA 1
+constexpr int RGB = 0;
+constexpr int RGBA = 1;
 
 //Main CAS kernel
 //Template: hasAlpha: whether the input image has an alpha channel

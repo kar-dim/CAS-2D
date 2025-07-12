@@ -30,6 +30,8 @@ private:
 	const dim2 localSize { 16, 16 };
 	dim2 texKernelDims { 0, 0 };
 
+	template<unsigned int ALIGN>
+	static constexpr unsigned int align(const unsigned int x) { return (x + (ALIGN - 1)) & ~(ALIGN - 1); }
 	void initializeMemory();
 	void destroyPinnedMemory();
 
