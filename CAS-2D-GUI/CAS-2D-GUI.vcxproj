@@ -238,7 +238,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="mainwindow.cpp" />
-    <ClCompile Include="widget_utils.cpp" />
     <ClCompile Include="ZoomableLabel.cpp" />
     <QtRcc Include="Resources.qrc" />
     <ClCompile Include="main.cpp" />

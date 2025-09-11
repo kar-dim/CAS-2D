@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     sharpenStrengthLabel(new QLabel("Sharpen Strength")),
     contrastAdaptionLabel(new QLabel("Contrast Adaption")),
     casObj(CAS_initialize()),
-    // 80% of the screen size
+    //80% of the screen size
     targetImageSize(QGuiApplication::primaryScreen()->availableGeometry().size() * 0.8)
 {
     //setup sliders
@@ -71,7 +71,7 @@ void MainWindow::setupSlider(QSlider *slider, QLabel *label, const int value) co
 //setup menus
 void MainWindow::setupMenu()
 {
-    // File Menu
+    //file Menu
     QMenu *fileMenu = menuBar()->addMenu("File");
     openImageAction = fileMenu->addAction("Open Image");
     saveImageAction = fileMenu->addAction("Save Image");
@@ -80,12 +80,12 @@ void MainWindow::setupMenu()
     connect(openImageAction, &QAction::triggered, this, &MainWindow::openImage);
     connect(saveImageAction, &QAction::triggered, this, &MainWindow::saveImage);
 
-    //View menu
+    //view menu
     QMenu* viewMenu = menuBar()->addMenu("View");
     connect(viewMenu->addAction("Zoom In"), &QAction::triggered, this, std::bind(&MainWindow::sendZoomEvent, this, 120));
     connect(viewMenu->addAction("Zoom Out"), &QAction::triggered, this, std::bind(&MainWindow::sendZoomEvent, this, -120));
 
-    // Help menu
+    //help menu
     QMenu* helpMenu = menuBar()->addMenu("Help");
     QAction* aboutQtAction = helpMenu->addAction("About Qt");
     connect(aboutQtAction, &QAction::triggered, this, &QApplication::aboutQt);
@@ -98,21 +98,21 @@ void MainWindow::setupImageView()
     imageView->setVisible(false);
 }
 
-// Main Widget initialize
+//main Widget initialize
 void MainWindow::setupMainWidget()
 {
-    // Main Layout
+    //main Layout
     QVBoxLayout *mainLayout = new QVBoxLayout;
     addSliderLayout(mainLayout, sharpenStrength, sharpenStrengthLabel);
     addSliderLayout(mainLayout, contrastAdaption, contrastAdaptionLabel);
 
-    // Create Scroll Area
+    //create Scroll Area
     scrollArea->setAlignment(Qt::AlignCenter);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(imageView);
 
     mainLayout->addWidget(scrollArea);
-    // Central Widget
+    //central Widget
     QWidget *centralWidget = new QWidget;
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);
@@ -136,7 +136,7 @@ void MainWindow::updateImageView(const QImage& image, const bool resetScale)
     scrollArea->setMinimumSize(pixmap.size() * 1.07);
 }
 
-//Open an image and display it to the user. Reinitialize CAS with the new dimensions
+//open an image and display it to the user. Reinitialize CAS with the new dimensions
 void MainWindow::openImage()
 {
     const QString fileName = QFileDialog::getOpenFileName(this, "Open Image", "", imageDialogFilterText);
@@ -160,12 +160,12 @@ void MainWindow::openImage()
     //suppply image to re-initialize internal CAS memory
     CAS_supplyImage(casObj, userImage.constBits(), userImageHasAlpha, userImage.height(), userImage.width());
 
-    // Only scale down if the image is larger than the target size
+    //only scale down if the image is larger than the target size
     updateImageView(userImage, true);
     WidgetUtils::setVisibility(true, imageView, sharpenStrength, contrastAdaption, sharpenStrengthLabel, contrastAdaptionLabel);
     saveImageAction->setEnabled(true);
 
-    // Resize the window to fit the image and sliders
+    //resize the window to fit the image and sliders
     adjustSize();
 
     //reset sliders
@@ -173,7 +173,7 @@ void MainWindow::openImage()
     contrastAdaption->setValue(100);
 }
 
-//Attempt to save the sharpened image
+//attempt to save the sharpened image
 void MainWindow::saveImage()
 {
     const QString fileName = QFileDialog::getSaveFileName(this, "Save Image", QString(), imageDialogFilterText);

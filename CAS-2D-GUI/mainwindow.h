@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QAction>
 #include <QImage>
@@ -15,6 +14,8 @@
 #include <QWidget>
 #include <ZoomableLabel.h>
 
+//Main GUI Window class
+//holds all widgets and GUI logic
 class MainWindow : public QMainWindow 
 {
     Q_OBJECT
@@ -54,5 +55,3 @@ private:
     bool userImageHasAlpha;
     QPoint lastMousePos;
 };
-
-#endif // MAINWINDOW_H

@@ -1,9 +1,11 @@
 #pragma once
+
 #include <QLabel>
 #include <QPixmap>
 #include <QWheelEvent>
 #include <QWidget>
 
+//Helper class for a QLabel that supports zooming via mouse wheel
 class ZoomableLabel : public QLabel 
 {
     QPixmap originalPixmap;
