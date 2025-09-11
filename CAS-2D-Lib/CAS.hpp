@@ -14,21 +14,6 @@ inline float3 flerp3(const float3 v0, const float3 v1, const float t)
 	return (float3)(fma(t, v1.x, fma(-t, v0.x, v0.x)), fma(t, v1.y, fma(-t, v0.y, v0.y)), fma(t, v1.z, fma(-t, v0.z, v0.z)));
 }
 
-inline float3 fmax3(float3 a, float3 b) 
-{
-	return (float3)(max(a.x, b.x), max(a.y, b.y), max(a.z, b.z));
-}
-
-inline float3 fmin3(float3 a, float3 b)
-{
-	return (float3)(min(a.x, b.x), min(a.y, b.y), min(a.z, b.z));
-}
-
-inline float3 make_float3(const float4 values)
-{
-	return (float3)(values.x, values.y, values.z);
-}
-
 //converts a float in the range [0,1] to an unsigned char in the range [0,255]
 inline unsigned char floatToUchar(const float value)
 {
@@ -94,31 +79,31 @@ __kernel void cas(
 			return;
 		}
 	}
-	const float3 e = make_float3(currentPixel);
-	const float3 a = make_float3(read_imagef(image, sampler, (int2)(x - 1, y - 1)));
-	const float3 b = make_float3(read_imagef(image, sampler, (int2)(x, y - 1)));
-	const float3 c = make_float3(read_imagef(image, sampler, (int2)(x + 1, y - 1)));
-	const float3 d = make_float3(read_imagef(image, sampler, (int2)(x - 1, y)));
-	const float3 f = make_float3(read_imagef(image, sampler, (int2)(x + 1, y)));
-	const float3 g = make_float3(read_imagef(image, sampler, (int2)(x - 1, y + 1)));
-	const float3 h = make_float3(read_imagef(image, sampler, (int2)(x, y + 1)));
-	const float3 i = make_float3(read_imagef(image, sampler, (int2)(x + 1, y + 1)));
+	const float3 e = currentPixel.xyz;
+	const float3 a = read_imagef(image, sampler, (int2)(x - 1, y - 1)).xyz;
+	const float3 b = read_imagef(image, sampler, (int2)(x, y - 1)).xyz;
+	const float3 c = read_imagef(image, sampler, (int2)(x + 1, y - 1)).xyz;
+	const float3 d = read_imagef(image, sampler, (int2)(x - 1, y)).xyz;
+	const float3 f = read_imagef(image, sampler, (int2)(x + 1, y)).xyz;
+	const float3 g = read_imagef(image, sampler, (int2)(x - 1, y + 1)).xyz;
+	const float3 h = read_imagef(image, sampler, (int2)(x, y + 1)).xyz;
+	const float3 i = read_imagef(image, sampler, (int2)(x + 1, y + 1)).xyz;
 
 	// Soft min and max.
 	//  a b c             b
 	//  d e f * 0.5  +  d e f * 0.5
 	//  g h i             h
 	// These are 2.0x bigger (factored out the extra multiply).
-	float3 mnRGB = fmin3(fmin3(fmin3(d, e), fmin3(f, b)), h);
-	const float3 mnRGB2 = fmin3(mnRGB, fmin3(fmin3(a, c), fmin3(g, i)));
+	float3 mnRGB = fmin(fmin(fmin(d, e), fmin(f, b)), h);
+	const float3 mnRGB2 = fmin(mnRGB, fmin(fmin(a, c), fmin(g, i)));
 	mnRGB += mnRGB2;
 
-	float3 mxRGB = fmax3(fmax3(fmax3(d, e), fmax3(f, b)), h);
-	const float3 mxRGB2 = fmax3(mxRGB, fmax3(fmax3(a, c), fmax3(g, i)));
+	float3 mxRGB = fmax(fmax(fmax(d, e), fmax(f, b)), h);
+	const float3 mxRGB2 = fmax(mxRGB, fmax(fmax(a, c), fmax(g, i)));
 	mxRGB += mxRGB2;
 
 	// Smooth minimum distance to signal limit divided by smooth max.
-	const float3 ampRGB = native_rsqrt(clamp(fmin3(mnRGB, 2.0f - mxRGB) * native_recip(mxRGB), 0.0f, 1.0f));
+	const float3 ampRGB = native_rsqrt(clamp(fmin(mnRGB, 2.0f - mxRGB) * native_recip(mxRGB), 0.0f, 1.0f));
 
 	// Shaping amount of sharpening.
 	const float3 wRGB = -native_recip(ampRGB * (-3.0f * contrastAdaption + 8.0f));
