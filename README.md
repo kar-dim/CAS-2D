@@ -21,7 +21,11 @@ This project implements CAS as compute kernel, CUDA and OpenCL. The main reasons
 
 Τhis repository has two projects:
 
-1. **CAS Implementation**. The core functionality of CAS, implemented as a compute kernel. It is a DLL project, and defines a C-style interface for interacting with the DLL. Programs that will use CAS filtering, should have in the output directory the CAS ```.dll``` and ```.lib``` files, and also include the ```CASLibWrapper.h``` file to interact with the DLL.
+1. **CAS Implementation**. CAS is implemented as a DLL project and provides a C-style interface for interaction. Here is how you can build and run programs that depend on CAS:
+    - For Building:
+    Ensure the following files are available in your output directory: ```CAS-2D-Lib.dll``` , ```CAS-2D-Lib.lib``` and ```CASLibWrapper.h``` (for interacting with the DLL)
+    - For Running:
+    Only the ```CAS-2D-Lib.dll``` is required. It must be either be present in the same directory as the executable, or available in the system PATH.
 2. **GUI Application**. This simple GUI project aims to showcase how to interact with the CAS DLL in order to sharpen images.
 
 ## Build
