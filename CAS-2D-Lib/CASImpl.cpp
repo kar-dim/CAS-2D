@@ -66,7 +66,7 @@ const unsigned char* CASImpl::sharpenImage(const int casMode, const float sharpe
 		queue.enqueueReadBuffer(casOutputBuffer, CL_TRUE, 0, totalBytes, hostOutputBuffer);
 		return hostOutputBuffer;
 	}
-	catch (const cl::Error& ex) {
-		throw std::runtime_error("ERROR in cas: " + std::string(ex.what()) + " Error code: " + std::to_string(ex.err()) + "\n");
+	catch (const cl::Error&) {
+		return nullptr;
 	}
 }

@@ -17,6 +17,7 @@
 #include <QScreen>
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QTimer>
 #include <QSlider>
 #include <QString>
 #include <QtGlobal>
@@ -40,6 +41,13 @@ MainWindow::MainWindow(QWidget *parent) :
     //80% of the screen size
     targetImageSize(QGuiApplication::primaryScreen()->availableGeometry().size() * 0.8)
 {
+	//check if DLL is loaded correctly
+    if (!casObj)
+    {
+        QMessageBox::critical(this, "Error", "Failed to initialize CAS DLL library.");
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+        return;
+	}
     //setup sliders
     setupSlider(sharpenStrength, sharpenStrengthLabel, 0);
     setupSlider(contrastAdaption, contrastAdaptionLabel, 100);
@@ -193,10 +201,16 @@ void MainWindow::sliderValueChanged()
     if (sharpenStrength->value() <= 0.001 || contrastAdaption->value() <= 0.001)
         return;
 
-    //apply CAS CUDA from DLL and update UI
+    //apply CAS from DLL and update UI
     const int sharpenedImageChannels = userImageHasAlpha ? 4 : 3;
     const auto sharpenedImageFormat = userImageHasAlpha ? QImage::Format_RGBA8888 : QImage::Format_RGB888;
     const uchar* casData = CAS_sharpenImage(casObj, 1, CLAMP(sharpenStrength->value()), CLAMP(contrastAdaption->value()));
+	//check if CAS returned valid data
+    if (!casData) 
+    {
+        QMessageBox::critical(this, "Error", "CAS failed to process the image.");
+		return;
+    }
     sharpenedImage = QImage(casData, userImage.width(), userImage.height(), userImage.width() * sharpenedImageChannels, sharpenedImageFormat);
     updateImageView(sharpenedImage, false);
 }

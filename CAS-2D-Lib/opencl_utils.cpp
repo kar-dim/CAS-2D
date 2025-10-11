@@ -84,9 +84,8 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
         device = bestDevice;
         return context;
     }
-    catch (const cl::Error& ex) 
-    {
-        throw ex;
+    catch (const cl::Error&) {
+        throw;
     }
 }
 

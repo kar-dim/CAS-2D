@@ -1,4 +1,5 @@
 #include "include/CASLibWrapper.h"
+#include <exception>
 #if defined (_USE_CUDA_)
 #include "CASImpl.cuh"
 #elif defined(_USE_OPENCL_)
@@ -9,7 +10,12 @@ extern "C" {
 
     CAS_API void* CAS_initialize()
     {
-        return new CASImpl();
+        try {
+            return new CASImpl();
+        }
+        catch (const std::exception&) {
+            return nullptr;
+        }
     }
 
     CAS_API void CAS_supplyImage(void* casImpl, const unsigned char* inputImage, const int hasAlpha, const unsigned int rows, const unsigned int cols)
