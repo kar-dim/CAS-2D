@@ -67,7 +67,7 @@ __global__ void cas(cudaTextureObject_t texObj, const float sharpenStrength, con
 	mxRGB += mxRGB2;
 
 	// Smooth minimum distance to signal limit divided by smooth max.
-	const half3 ampRGB = h3rsqrtf(saturateh(hmin3(mnRGB, __float2half(2.0f) - mxRGB) * h3rcp(mxRGB)));
+	const half3 ampRGB = h3rsqrt(saturateh(hmin3(mnRGB, __float2half(2.0f) - mxRGB) * h3rcp(mxRGB)));
 
 	// Shaping amount of sharpening.
 	const half3 wRGB = -h3rcp(ampRGB * (__float2half(-3.0f) * __float2half(contrastAdaption) + __float2half(8.0f)));

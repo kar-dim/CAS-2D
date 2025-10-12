@@ -61,7 +61,7 @@ inline __device__ half powh(const half base, const half exp)
     return __float2half(__powf(__half2float(base), __half2float(exp)));
 }
 
-inline __device__ half3 h3rsqrtf(const half3 x)
+inline __device__ half3 h3rsqrt(const half3 x)
 {
     return make_half3(h2rsqrt(x.x), hrsqrt(x.y));
 }
