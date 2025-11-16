@@ -197,10 +197,6 @@ void MainWindow::saveImage()
 //event handler when a Slider is changed, triggers the CAS sharpening to occur and the display to show the new image
 void MainWindow::sliderValueChanged()
 {
-    //don't calculate if parameters are (very close to) 0
-    if (sharpenStrength->value() <= 0.001 || contrastAdaption->value() <= 0.001)
-        return;
-
     //apply CAS from DLL and update UI
     const int sharpenedImageChannels = userImageHasAlpha ? 4 : 3;
     const auto sharpenedImageFormat = userImageHasAlpha ? QImage::Format_RGBA8888 : QImage::Format_RGB888;
