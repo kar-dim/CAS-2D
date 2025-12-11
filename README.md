@@ -40,7 +40,7 @@ The solution provides multiple build configurations, each targeting a specific b
 | `CUDA_Release`   | CUDA        | CUDA backend. Slightly faster than OpenCL, but works only for NVIDIA GPUs. |
 | `CUDA_Debug`     | CUDA        | CUDA backend. Slightly faster than OpenCL, but works only for NVIDIA GPUs (debug build). |
 
-1. For the CUDA CAS DLL Implementation, CUDA Toolkit (tested with version 12.9) is required, in order to link with the CUDA libraries and to include the CUDA header files.
+1. For the CUDA CAS DLL Implementation, CUDA Toolkit is required, in order to link with the CUDA libraries and to include the CUDA header files.
 2. For the OpenCL CAS DLL Implementation, the relevant [OpenCL Headers](https://github.com/KhronosGroup/OpenCL-Headers), [OpenCL C++ Bindings](https://github.com/KhronosGroup/OpenCL-CLHPP) and [OpenCL Library file](https://github.com/KhronosGroup/OpenCL-SDK) are already included and configured for this project.
    - **NOTE**: Because there may be more than one devices that support OpenCL, the DLL automatically tries to guess the faster device based on some device characteristics.
 3. The Qt GUI application requires Qt MSVC (tested with version 6.8.0) in order to use the Qt framework.
