@@ -6,7 +6,7 @@
 
 //initialize empty CAS instance
 CASImpl::CASImpl() : casOutputBuffer(nullptr), hostOutputBuffer(nullptr), pinnedHostOutputBuffer(nullptr), hasAlpha(false), 
-rows(0), cols(0), totalBytes(0), context(cl_utils::createOpenCLContext(queue, device)), casProgram(cl_utils::buildCasKernel(context, queue, device))
+rows(0), cols(0), totalBytes(0), context(cl_utils::createOpenCLContext(queue, device)), casProgram(cl_utils::buildCasKernel(context, device))
 { }
 
 //destructor, unmaps pinned memory, everything else is handled with RAII (cl::Buffers etc)

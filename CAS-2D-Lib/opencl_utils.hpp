@@ -33,5 +33,5 @@ namespace cl_utils
     cl::Context createOpenCLContext(cl::CommandQueue& queue, cl::Device& device);
 
     //builds the CAS kernel
-    cl::Program buildCasKernel(cl::Context& context, cl::CommandQueue& queue, cl::Device& device);
+    cl::Program buildCasKernel(cl::Context& context, cl::Device& device);
 }

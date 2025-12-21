@@ -89,7 +89,7 @@ cl::Context cl_utils::createOpenCLContext(cl::CommandQueue &queue, cl::Device &d
     }
 }
 
-cl::Program cl_utils::buildCasKernel(cl::Context& context, cl::CommandQueue& queue, cl::Device& device)
+cl::Program cl_utils::buildCasKernel(cl::Context& context, cl::Device& device)
 {
     //compile opencl kernel
     cl::Program casKernel;
