@@ -11,6 +11,7 @@
 #include <QSlider>
 #include <QString>
 #include <QVBoxLayout>
+#include <QTimer>
 #include <QWidget>
 #include <ZoomableLabel.h>
 
@@ -43,6 +44,7 @@ private:
     void setupMainWidget();
     void addSliderLayout(QVBoxLayout *mainLayout, QSlider *slider, QLabel *label);
     void updateImageView(const QImage& image, const bool resetScale);
+    void performSharpening();
 
     QImage userImage, sharpenedImage;
     QSlider *sharpenStrength, *contrastAdaption;
@@ -54,4 +56,5 @@ private:
     const QSize targetImageSize;
     bool userImageHasAlpha;
     QPoint lastMousePos;
+    QTimer* throttleTimer;
 };

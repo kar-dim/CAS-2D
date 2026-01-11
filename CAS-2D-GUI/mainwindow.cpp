@@ -17,10 +17,11 @@
 #include <QScreen>
 #include <QScrollArea>
 #include <QScrollBar>
-#include <QTimer>
 #include <QSlider>
 #include <QString>
 #include <QtGlobal>
+#include <QTimer>
+#include <QTimer>
 #include <QtMinMax>
 #include <QVBoxLayout>
 #include <QWheelEvent>
@@ -39,7 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
     contrastAdaptionLabel(new QLabel("Contrast Adaption")),
     casObj(CAS_initialize()),
     //80% of the screen size
-    targetImageSize(QGuiApplication::primaryScreen()->availableGeometry().size() * 0.8)
+    targetImageSize(QGuiApplication::primaryScreen()->availableGeometry().size() * 0.8),
+    throttleTimer(new QTimer(this))
 {
 	//check if DLL is loaded correctly
     if (!casObj)
@@ -48,6 +50,10 @@ MainWindow::MainWindow(QWidget *parent) :
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         return;
 	}
+    //setup sharpening timer
+    throttleTimer->setSingleShot(true); //run once, then stop until triggered again
+    connect(throttleTimer, &QTimer::timeout, this, &MainWindow::performSharpening);
+
     //setup sliders
     setupSlider(sharpenStrength, sharpenStrengthLabel, 0);
     setupSlider(contrastAdaption, contrastAdaptionLabel, 100);
@@ -144,6 +150,23 @@ void MainWindow::updateImageView(const QImage& image, const bool resetScale)
     scrollArea->setMinimumSize(pixmap.size() * 1.07);
 }
 
+//main CAS sharpening method, calls the DLL and updates the display to show the new image
+void MainWindow::performSharpening()
+{
+    //apply CAS from DLL and update UI
+    const int sharpenedImageChannels = userImageHasAlpha ? 4 : 3;
+    const auto sharpenedImageFormat = userImageHasAlpha ? QImage::Format_RGBA8888 : QImage::Format_RGB888;
+    const uchar* casData = CAS_sharpenImage(casObj, 1, CLAMP(sharpenStrength->value()), CLAMP(contrastAdaption->value()));
+    //check if CAS returned valid data
+    if (!casData)
+    {
+        QMessageBox::critical(this, "Error", "CAS failed to process the image.");
+        return;
+    }
+    sharpenedImage = QImage(casData, userImage.width(), userImage.height(), userImage.width() * sharpenedImageChannels, sharpenedImageFormat);
+    updateImageView(sharpenedImage, false);
+}
+
 //open an image and display it to the user. Reinitialize CAS with the new dimensions
 void MainWindow::openImage()
 {
@@ -194,21 +217,13 @@ void MainWindow::saveImage()
         QMessageBox::information(this, "Save Image", "Image saved successfully.");
 }
 
-//event handler when a Slider is changed, triggers the CAS sharpening to occur and the display to show the new image
+//event handler when a Slider is changed, checks if the timer is active, skip redundant (too fast) cuda calls
+//else, it restarts the timer
 void MainWindow::sliderValueChanged()
 {
-    //apply CAS from DLL and update UI
-    const int sharpenedImageChannels = userImageHasAlpha ? 4 : 3;
-    const auto sharpenedImageFormat = userImageHasAlpha ? QImage::Format_RGBA8888 : QImage::Format_RGB888;
-    const uchar* casData = CAS_sharpenImage(casObj, 1, CLAMP(sharpenStrength->value()), CLAMP(contrastAdaption->value()));
-	//check if CAS returned valid data
-    if (!casData) 
-    {
-        QMessageBox::critical(this, "Error", "CAS failed to process the image.");
-		return;
-    }
-    sharpenedImage = QImage(casData, userImage.width(), userImage.height(), userImage.width() * sharpenedImageChannels, sharpenedImageFormat);
-    updateImageView(sharpenedImage, false);
+    if (throttleTimer->isActive())
+        return;
+    throttleTimer->start(50);
 }
 
 void MainWindow::sendZoomEvent(const int delta) 
