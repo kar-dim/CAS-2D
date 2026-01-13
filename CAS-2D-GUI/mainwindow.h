@@ -15,34 +15,33 @@
 #include <QWidget>
 #include <ZoomableLabel.h>
 
-//Main GUI Window class
-//holds all widgets and GUI logic
-class MainWindow : public QMainWindow 
-{
+// Main GUI Window class
+// holds all widgets and GUI logic
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-public:
-    MainWindow(QWidget *parent = nullptr);
+  public:
+    MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-private slots:
+  private slots:
     void openImage();
     void saveImage();
     void sliderValueChanged();
     void sendZoomEvent(const int delta);
 
-protected:
+  protected:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
 
-private:
-    const QString imageDialogFilterText { "Images (*.png *.jpg *.bmp *.webp *.tiff)" };
+  private:
+    const QString imageDialogFilterText{"Images (*.png *.jpg *.bmp *.webp *.tiff)"};
     void setupMenu();
-    void setupSlider(QSlider *slider, QLabel *label, const int value) const;
+    void setupSlider(QSlider* slider, QLabel* label, const int value) const;
     void setupImageView();
     void setupMainWidget();
-    void addSliderLayout(QVBoxLayout *mainLayout, QSlider *slider, QLabel *label);
+    void addSliderLayout(QVBoxLayout* mainLayout, QSlider* slider, QLabel* label);
     void updateImageView(const QImage& image, const bool resetScale);
     void performSharpening();
 

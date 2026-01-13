@@ -28,53 +28,40 @@
 #include <QWidget>
 #include <type_traits>
 
-#define CLAMP(x) qBound(0.0f, x/100.0f, 1.0f)
+#define CLAMP(x) qBound(0.0f, x / 100.0f, 1.0f)
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    sharpenStrength(new QSlider(Qt::Horizontal)),
-    contrastAdaption(new QSlider(Qt::Horizontal)),
-    imageView(new ZoomableLabel),
-    scrollArea(new QScrollArea),
-    sharpenStrengthLabel(new QLabel("Sharpen Strength")),
-    contrastAdaptionLabel(new QLabel("Contrast Adaption")),
-    casObj(CAS_initialize()),
-    //80% of the screen size
-    targetImageSize(QGuiApplication::primaryScreen()->availableGeometry().size() * 0.8),
-    throttleTimer(new QTimer(this))
-{
-	//check if DLL is loaded correctly
-    if (!casObj)
-    {
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent), sharpenStrength(new QSlider(Qt::Horizontal)), contrastAdaption(new QSlider(Qt::Horizontal)), imageView(new ZoomableLabel), scrollArea(new QScrollArea),
+      sharpenStrengthLabel(new QLabel("Sharpen Strength")), contrastAdaptionLabel(new QLabel("Contrast Adaption")), casObj(CAS_initialize()),
+      // 80% of the screen size
+      targetImageSize(QGuiApplication::primaryScreen()->availableGeometry().size() * 0.8), throttleTimer(new QTimer(this)) {
+    // check if DLL is loaded correctly
+    if (!casObj) {
         QMessageBox::critical(this, "Error", "Failed to initialize CAS DLL library.");
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         return;
-	}
-    //setup sharpening timer
-    throttleTimer->setSingleShot(true); //run once, then stop until triggered again
+    }
+    // setup sharpening timer
+    throttleTimer->setSingleShot(true); // run once, then stop until triggered again
     connect(throttleTimer, &QTimer::timeout, this, &MainWindow::performSharpening);
 
-    //setup sliders
+    // setup sliders
     setupSlider(sharpenStrength, sharpenStrengthLabel, 0);
     setupSlider(contrastAdaption, contrastAdaptionLabel, 100);
-    //setup file menu
+    // setup file menu
     setupMenu();
-    //setup main image view
+    // setup main image view
     setupImageView();
-    //setup main widget
+    // setup main widget
     setupMainWidget();
 }
 
-//destroy DLL's memory
-MainWindow::~MainWindow()
-{
-    CAS_destroy(casObj);
-}
+// destroy DLL's memory
+MainWindow::~MainWindow() { CAS_destroy(casObj); }
 
-//setup CAS parameter sliders
-void MainWindow::setupSlider(QSlider *slider, QLabel *label, const int value) const
-{
-    //Setup slider properties (QSlider and correspinding QLabel)
+// setup CAS parameter sliders
+void MainWindow::setupSlider(QSlider* slider, QLabel* label, const int value) const {
+    // Setup slider properties (QSlider and correspinding QLabel)
     slider->setRange(0, 100);
     slider->setValue(value);
     label->setFixedWidth(130);
@@ -82,11 +69,10 @@ void MainWindow::setupSlider(QSlider *slider, QLabel *label, const int value) co
     connect(slider, &QSlider::valueChanged, this, &MainWindow::sliderValueChanged);
 }
 
-//setup menus
-void MainWindow::setupMenu()
-{
-    //file Menu
-    QMenu *fileMenu = menuBar()->addMenu("File");
+// setup menus
+void MainWindow::setupMenu() {
+    // file Menu
+    QMenu* fileMenu = menuBar()->addMenu("File");
     openImageAction = fileMenu->addAction("Open Image");
     saveImageAction = fileMenu->addAction("Save Image");
     saveImageAction->setEnabled(false);
@@ -94,72 +80,66 @@ void MainWindow::setupMenu()
     connect(openImageAction, &QAction::triggered, this, &MainWindow::openImage);
     connect(saveImageAction, &QAction::triggered, this, &MainWindow::saveImage);
 
-    //view menu
+    // view menu
     QMenu* viewMenu = menuBar()->addMenu("View");
     connect(viewMenu->addAction("Zoom In"), &QAction::triggered, this, std::bind(&MainWindow::sendZoomEvent, this, 120));
     connect(viewMenu->addAction("Zoom Out"), &QAction::triggered, this, std::bind(&MainWindow::sendZoomEvent, this, -120));
 
-    //help menu
+    // help menu
     QMenu* helpMenu = menuBar()->addMenu("Help");
     QAction* aboutQtAction = helpMenu->addAction("About Qt");
     connect(aboutQtAction, &QAction::triggered, this, &QApplication::aboutQt);
 }
 
-//setup Main image view
-void MainWindow::setupImageView()
-{
+// setup Main image view
+void MainWindow::setupImageView() {
     imageView->setAlignment(Qt::AlignCenter);
     imageView->setVisible(false);
 }
 
-//main Widget initialize
-void MainWindow::setupMainWidget()
-{
-    //main Layout
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+// main Widget initialize
+void MainWindow::setupMainWidget() {
+    // main Layout
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     addSliderLayout(mainLayout, sharpenStrength, sharpenStrengthLabel);
     addSliderLayout(mainLayout, contrastAdaption, contrastAdaptionLabel);
 
-    //create Scroll Area
+    // create Scroll Area
     scrollArea->setAlignment(Qt::AlignCenter);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(imageView);
 
     mainLayout->addWidget(scrollArea);
-    //central Widget
-    QWidget *centralWidget = new QWidget;
+    // central Widget
+    QWidget* centralWidget = new QWidget;
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);
 }
 
-//add a Slider Horizontal layout (Slider and Label) into a Vertical layout
-void MainWindow::addSliderLayout(QVBoxLayout *mainLayout, QSlider *slider, QLabel *label)
-{
-    QHBoxLayout *sliderLayout = new QHBoxLayout;
+// add a Slider Horizontal layout (Slider and Label) into a Vertical layout
+void MainWindow::addSliderLayout(QVBoxLayout* mainLayout, QSlider* slider, QLabel* label) {
+    QHBoxLayout* sliderLayout = new QHBoxLayout;
     sliderLayout->addWidget(label);
     sliderLayout->addWidget(slider);
     mainLayout->addLayout(sliderLayout);
 }
 
-//updates the Image label to show the passed-in QImage
-void MainWindow::updateImageView(const QImage& image, const bool resetScale)
-{
+// updates the Image label to show the passed-in QImage
+void MainWindow::updateImageView(const QImage& image, const bool resetScale) {
     QPixmap pixmap = QPixmap::fromImage(image);
     WidgetUtils::scalePixmap(pixmap, targetImageSize);
     resetScale ? imageView->setImage(pixmap) : imageView->updateImage(pixmap);
     scrollArea->setMinimumSize(pixmap.size() * 1.07);
 }
 
-//main CAS sharpening method, calls the DLL and updates the display to show the new image
-void MainWindow::performSharpening()
-{
-    //apply CAS from DLL and update UI
+// main CAS sharpening method, calls the DLL and updates the display to show the new image
+void MainWindow::performSharpening() {
+    // apply CAS from DLL and update UI
     const int sharpenedImageChannels = userImageHasAlpha ? 4 : 3;
     const auto sharpenedImageFormat = userImageHasAlpha ? QImage::Format_RGBA8888 : QImage::Format_RGB888;
     const uchar* casData = CAS_sharpenImage(casObj, 1, CLAMP(sharpenStrength->value()), CLAMP(contrastAdaption->value()));
-    //check if CAS returned valid data
-    if (!casData)
-    {
+    // check if CAS returned valid data
+    if (!casData) {
         QMessageBox::critical(this, "Error", "CAS failed to process the image.");
         return;
     }
@@ -167,46 +147,43 @@ void MainWindow::performSharpening()
     updateImageView(sharpenedImage, false);
 }
 
-//open an image and display it to the user. Reinitialize CAS with the new dimensions
-void MainWindow::openImage()
-{
+// open an image and display it to the user. Reinitialize CAS with the new dimensions
+void MainWindow::openImage() {
     const QString fileName = QFileDialog::getOpenFileName(this, "Open Image", "", imageDialogFilterText);
     if (fileName.isEmpty())
         return;
     QImageReader reader(fileName);
     reader.setAutoTransform(true);
     QImage readerImage = reader.read();
-    if (readerImage.isNull())
-	{
-		QMessageBox::critical(this, "Open Image", "Failed to open the image.");
-		return;
-	}
+    if (readerImage.isNull()) {
+        QMessageBox::critical(this, "Open Image", "Failed to open the image.");
+        return;
+    }
 
-	userImage = std::move(readerImage);
+    userImage = std::move(readerImage);
     sharpenedImage = QImage(userImage);
 
-    //convert to RGBA interleaved format
+    // convert to RGBA interleaved format
     userImageHasAlpha = userImage.hasAlphaChannel();
     userImage = userImage.convertToFormat(QImage::Format_RGBA8888);
-    //suppply image to re-initialize internal CAS memory
+    // suppply image to re-initialize internal CAS memory
     CAS_supplyImage(casObj, userImage.constBits(), userImageHasAlpha, userImage.height(), userImage.width());
 
-    //only scale down if the image is larger than the target size
+    // only scale down if the image is larger than the target size
     updateImageView(userImage, true);
     WidgetUtils::setVisibility(true, imageView, sharpenStrength, contrastAdaption, sharpenStrengthLabel, contrastAdaptionLabel);
     saveImageAction->setEnabled(true);
 
-    //resize the window to fit the image and sliders
+    // resize the window to fit the image and sliders
     adjustSize();
 
-    //reset sliders
+    // reset sliders
     sharpenStrength->setValue(0);
     contrastAdaption->setValue(100);
 }
 
-//attempt to save the sharpened image
-void MainWindow::saveImage()
-{
+// attempt to save the sharpened image
+void MainWindow::saveImage() {
     const QString fileName = QFileDialog::getSaveFileName(this, "Save Image", QString(), imageDialogFilterText);
     if (fileName.isEmpty())
         return;
@@ -217,36 +194,30 @@ void MainWindow::saveImage()
         QMessageBox::information(this, "Save Image", "Image saved successfully.");
 }
 
-//event handler when a Slider is changed, checks if the timer is active, skip redundant (too fast) cuda calls
-//else, it restarts the timer
-void MainWindow::sliderValueChanged()
-{
+// event handler when a Slider is changed, checks if the timer is active, skip redundant (too fast) cuda calls
+// else, it restarts the timer
+void MainWindow::sliderValueChanged() {
     if (throttleTimer->isActive())
         return;
     throttleTimer->start(50);
 }
 
-void MainWindow::sendZoomEvent(const int delta) 
-{
+void MainWindow::sendZoomEvent(const int delta) {
     QWheelEvent event(QPoint(0, 0), QPoint(0, 0), QPoint(0, delta), QPoint(0, delta), Qt::NoButton, Qt::ControlModifier, Qt::ScrollBegin, false, Qt::MouseEventNotSynthesized);
     QApplication::sendEvent(imageView, &event);
 }
 
-//change the cursor to hand when the user holds the left click button
-void MainWindow::mousePressEvent(QMouseEvent* event)
-{
-    if (event->button() == Qt::LeftButton) 
-    {
+// change the cursor to hand when the user holds the left click button
+void MainWindow::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
         lastMousePos = event->pos();
         setCursor(Qt::ClosedHandCursor);
     }
 }
 
-//pan the image based on the mouse movement
-void MainWindow::mouseMoveEvent(QMouseEvent* event)
-{
-    if (event->buttons() & Qt::LeftButton) 
-    {
+// pan the image based on the mouse movement
+void MainWindow::mouseMoveEvent(QMouseEvent* event) {
+    if (event->buttons() & Qt::LeftButton) {
         QPoint delta = event->pos() - lastMousePos;
         lastMousePos = event->pos();
         scrollArea->horizontalScrollBar()->setValue(scrollArea->horizontalScrollBar()->value() - delta.x());
@@ -254,9 +225,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
-//revert the cursor icon from hand to the original cursor when the user releases the left click
-void MainWindow::mouseReleaseEvent(QMouseEvent* event)
-{
+// revert the cursor icon from hand to the original cursor when the user releases the left click
+void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton)
         setCursor(Qt::ArrowCursor);
 }

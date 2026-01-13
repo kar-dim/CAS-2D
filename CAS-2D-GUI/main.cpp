@@ -6,8 +6,7 @@
 #include <QSize>
 #include <QString>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/assets/gpuopen.ico"));
 
