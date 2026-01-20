@@ -19,6 +19,8 @@ This project implements CAS as compute kernel, CUDA and OpenCL. The main reasons
 1. General purpose. Because CAS is technically a filter, it can also be used for sharpening static images (like local files from disk). The original CAS filter works only in 3D graphics frameworks.
 2. Speed. By implementing the CAS algorithm efficiently in Compute frameworks, we can expect major speedups compared to CPU implementations by leveraging the GPU's high performance in parallel problems.
 
+NOTE: This re-implementation is inspired by the [ReShade](https://reshade.me/) project, which also implements CAS for Graphics frameworks.
+
 Τhis repository has two projects:
 
 1. **CAS Implementation**. CAS is implemented as a DLL project and provides a C-style interface for interaction. Here is how you can build and run programs that depend on CAS:
