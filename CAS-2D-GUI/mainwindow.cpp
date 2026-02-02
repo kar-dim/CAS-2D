@@ -21,7 +21,6 @@
 #include <QString>
 #include <QtGlobal>
 #include <QTimer>
-#include <QTimer>
 #include <QtMinMax>
 #include <QVBoxLayout>
 #include <QWheelEvent>
