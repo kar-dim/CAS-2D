@@ -1,4 +1,4 @@
-# CAS-2D
+# hipCAS
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/06eaafc2-7bfa-4bff-ab48-646230ddd936"></img>
@@ -10,14 +10,12 @@ It is used in 3D Graphics frameworks like DX12 and Vulkan, and provides a mixed 
 
 </br>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/670b2932-8c3c-4e6d-88ee-be4f5dae2d28" width="33%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img src="https://github.com/user-attachments/assets/e92fc01d-50cd-4ab0-ba97-b51e57be47a0" width="33%">
+  <img width="512" height="288" alt="rocm" src="https://github.com/user-attachments/assets/d50056dd-cef8-4777-ae8f-d5f01b0decf6" />
 </p>
 
-This project implements CAS as compute kernel, CUDA and OpenCL. The main reasons for porting CAS to these compute frameworks are:
+This project implements CAS as compute kernel, using AMD HIP (ROCm). The main reasons for porting CAS to HIP are:
 1. General purpose. Because CAS is technically a filter, it can also be used for sharpening static images (like local files from disk). The original CAS filter works only in 3D graphics frameworks.
-2. Speed. By implementing the CAS algorithm efficiently in Compute frameworks, we can expect major speedups compared to CPU implementations by leveraging the GPU's high performance in parallel problems.
+2. Speed. By implementing the CAS algorithm efficiently in compute frameworks, we can expect major speedups compared to CPU implementations by leveraging the GPU's high performance in parallel problems.
 
 NOTE: This re-implementation is inspired by the [ReShade](https://reshade.me/) project, which also implements CAS for Graphics frameworks.
 
@@ -25,9 +23,9 @@ NOTE: This re-implementation is inspired by the [ReShade](https://reshade.me/) p
 
 1. **CAS Implementation**. CAS is implemented as a DLL project and provides a C-style interface for interaction. Here is how you can build and run programs that depend on CAS:
     - For Building:
-    Ensure the following files are available in your output directory: ```CAS-2D-Lib.dll``` , ```CAS-2D-Lib.lib``` and ```CASLibWrapper.h``` (for interacting with the DLL)
+    Ensure the following files are available in your output directory: ```hipCAS-Lib.dll``` , ```hipCAS-Lib.lib``` and ```CASLibWrapper.h``` (for interacting with the DLL)
     - For Running:
-    Only the ```CAS-2D-Lib.dll``` is required. It must be either be present in the same directory as the executable, or available in the system PATH.
+    Only the ```hipCAS-Lib.dll``` is required. It must be either be present in the same directory as the executable, or available in the system PATH.
 2. **GUI Application**. This simple GUI project aims to showcase how to interact with the CAS DLL in order to sharpen images.
 
 ## Build
@@ -37,14 +35,13 @@ The solution provides multiple build configurations, each targeting a specific b
 
 | Configuration    | Backend     | Notes                                       |
 |------------------|-------------|---------------------------------------------|
-| `OPENCL_Release` | OpenCL      | Most recommended backend with very high performance. |
-| `OPENCL_Debug`   | OpenCL      | Most recommended backend with very high performance (debug build). |
-| `CUDA_Release`   | CUDA        | CUDA backend. Slightly faster than OpenCL, but works only for NVIDIA GPUs. |
-| `CUDA_Debug`     | CUDA        | CUDA backend. Slightly faster than OpenCL, but works only for NVIDIA GPUs (debug build). |
+| `AMD_Release`    | AMD clang   | AMD backend. Built by AMD's clang compiler to natively run CUDA code for AMD GPUs. |
+| `AMD_Debug`      | AMD clang   | AMD backend (debug build). |
+| `CUDA_Release`   | CUDA        | CUDA backend. Built by nvcc. |
+| `CUDA_Debug`     | CUDA        | CUDA backend (debug build). |
 
-1. For the CUDA CAS DLL Implementation, CUDA Toolkit is required, in order to link with the CUDA libraries and to include the CUDA header files.
-2. For the OpenCL CAS DLL Implementation, the relevant [OpenCL Headers](https://github.com/KhronosGroup/OpenCL-Headers), [OpenCL C++ Bindings](https://github.com/KhronosGroup/OpenCL-CLHPP) and [OpenCL Library file](https://github.com/KhronosGroup/OpenCL-SDK) are already included and configured for this project.
-   - **NOTE**: Because there may be more than one devices that support OpenCL, the DLL automatically tries to guess the faster device based on some device characteristics.
+1. HIP ROCm SDK v7.1 is used.
+2. For the CUDA CAS DLL Implementation, ```CUDA Toolkit 12.4``` is required, in order to link with the CUDA libraries and to include the CUDA header files. Higher versions **are not supported** by ROCm v7.1. The Environment Variable ```CUDA_PATH_V12_4``` should be defined (automatically when installing CUDA toolkit, usually with this default value: ```C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.4```).
 3. The Qt GUI application requires Qt MSVC (tested with version 6.8.0) in order to use the Qt framework.
 4. When building the GUI project, the tool ```windeployqt``` is called in order to copy the required Qt dependencies for running the application. Also, the DLL is copied in the GUI application's output folder.
 
