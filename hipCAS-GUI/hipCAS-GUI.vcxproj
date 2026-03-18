@@ -9,12 +9,12 @@
       <Configuration>CUDA_Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="OPENCL_Debug|x64">
-      <Configuration>OPENCL_Debug</Configuration>
+    <ProjectConfiguration Include="AMD_Debug|x64">
+      <Configuration>AMD_Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="OPENCL_Release|x64">
-      <Configuration>OPENCL_Release</Configuration>
+    <ProjectConfiguration Include="AMD_Release|x64">
+      <Configuration>AMD_Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -22,9 +22,9 @@
     <ProjectGuid>{77ECD4F7-FFEC-4F65-BBAD-4E4E90FF8F99}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)'=='CUDA_Debug|x64'">10.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)'=='OPENCL_Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)'=='AMD_Debug|x64'">10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)'=='CUDA_Release|x64'">10.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)'=='OPENCL_Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)'=='AMD_Release|x64'">10.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -34,7 +34,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Debug|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -47,7 +47,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Release|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -62,16 +62,16 @@
     <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
-    <QtDeployDir>@(_-->'%(OutDir)CAS-2D-GUI')</QtDeployDir>
+    <QtDeployDir>@(_-->'%(OutDir)hipCAS-GUI')</QtDeployDir>
     <QtDeployDebugRelease>debug</QtDeployDebugRelease>
     <QtDeploy>true</QtDeploy>
     <QtDeployCopyFiles>true</QtDeployCopyFiles>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Debug|x64'" Label="QtSettings">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Debug|x64'" Label="QtSettings">
     <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
-    <QtDeployDir>@(_-->'%(OutDir)CAS-2D-GUI')</QtDeployDir>
+    <QtDeployDir>@(_-->'%(OutDir)hipCAS-GUI')</QtDeployDir>
     <QtDeployDebugRelease>debug</QtDeployDebugRelease>
     <QtDeploy>true</QtDeploy>
     <QtDeployCopyFiles>true</QtDeployCopyFiles>
@@ -81,16 +81,16 @@
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
-    <QtDeployDir>@(_-->'%(OutDir)CAS-2D-GUI')</QtDeployDir>
+    <QtDeployDir>@(_-->'%(OutDir)hipCAS-GUI')</QtDeployDir>
     <QtDeployDebugRelease>release</QtDeployDebugRelease>
     <QtDeployCopyFiles>true</QtDeployCopyFiles>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Release|x64'" Label="QtSettings">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Release|x64'" Label="QtSettings">
     <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
-    <QtDeployDir>@(_-->'%(OutDir)CAS-2D-GUI')</QtDeployDir>
+    <QtDeployDir>@(_-->'%(OutDir)hipCAS-GUI')</QtDeployDir>
     <QtDeployDebugRelease>release</QtDeployDebugRelease>
     <QtDeployCopyFiles>true</QtDeployCopyFiles>
   </PropertyGroup>
@@ -103,7 +103,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Debug|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
@@ -111,21 +111,21 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Release|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CUDA_Debug|x64'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Debug|x64'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CUDA_Release|x64'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Release|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Release|x64'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CUDA_Debug|x64'">
     <ClCompile>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Debug|x64'">
     <ClCompile>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -134,20 +134,21 @@
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)CAS-2D-Lib/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)hipCAS-Lib/include</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)hipCAS-Lib.dll" "$(OutDir)hipCAS-GUI\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Debug|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)CAS-2D-Lib/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)hipCAS-Lib/include</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)hipCAS-Lib.dll" "$(OutDir)hipCAS-GUI\" /y /D
+xcopy "$(HIP_PATH)bin\amdhip64_7.dll" "$(OutDir)hipCAS-GUI\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CUDA_Release|x64'">
@@ -155,7 +156,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Release|x64'">
     <ClCompile>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -164,20 +165,21 @@
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)CAS-2D-Lib/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)hipCAS-Lib/include</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)hipCAS-Lib.dll" "$(OutDir)hipCAS-GUI\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Release|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)CAS-2D-Lib/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)hipCAS-Lib/include</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)CAS-2D-Lib.dll" "$(OutDir)CAS-2D-GUI\" /y /D</Command>
+      <Command>xcopy "$(OutDir)hipCAS-Lib.dll" "$(OutDir)hipCAS-GUI\" /y /D
+xcopy "$(HIP_PATH)bin\amdhip64_7.dll" "$(OutDir)hipCAS-GUI\" /y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CUDA_Debug|x64'" Label="Configuration">
@@ -192,7 +194,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Debug|x64'" Label="Configuration">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WarningLevel>Level3</WarningLevel>
@@ -220,7 +222,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OPENCL_Release|x64'" Label="Configuration">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AMD_Release|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WarningLevel>Level3</WarningLevel>
@@ -253,8 +255,8 @@
     <ResourceCompile Include="resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CAS-2D-Lib\CAS-2D-Lib.vcxproj">
-      <Project>{b07da219-fb43-432d-a0aa-43d7127e59ca}</Project>
+    <ProjectReference Include="..\hipCAS-Lib\hipCAS-Lib.vcxproj">
+      <Project>{22c54f1a-159d-4934-8b7f-f84189e38b63}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

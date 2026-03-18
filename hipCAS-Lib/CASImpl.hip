@@ -1,7 +1,7 @@
-﻿#include "CASImpl.cuh"
-#include "CAS.cuh"
-#include "cuda_utils.hpp"
-#include <cuda_runtime.h>
+﻿#include "CAS.hpp"
+#include "CASImpl.hpp"
+#include "hip_utils.hpp"
+#include <hip/hip_runtime.h>
 
 // initialize empty CAS instance
 CASImpl::CASImpl() : texObj(0), texArray(nullptr), casOutputBuffer(nullptr), hostOutputBuffer(nullptr), hasAlpha(false), rows(0), cols(0), totalBytes(0) {}
@@ -13,10 +13,10 @@ CASImpl::~CASImpl() { destroyBuffers(); }
 void CASImpl::initializeMemory() {
     totalBytes = rows * cols * (hasAlpha ? sizeof(uchar4) : sizeof(uchar3));
     // initialize CAS output buffers and pinned memory for output
-    cudaMalloc(&casOutputBuffer, totalBytes);
-    cudaHostAlloc(&hostOutputBuffer, totalBytes, cudaHostAllocDefault);
+    hipMalloc(&casOutputBuffer, totalBytes);
+    hipHostAlloc(&hostOutputBuffer, totalBytes, hipHostMallocDefault);
     // initialize texture
-    auto textureData = cuda_utils::createTextureData(rows, cols);
+    auto textureData = hip_utils::createTextureData(rows, cols);
     texObj = textureData.first;
     texArray = textureData.second;
 }
@@ -28,7 +28,7 @@ void CASImpl::reinitializeMemory(const bool hasAlpha, const unsigned char* hostR
     this->hasAlpha = hasAlpha;
     destroyBuffers();
     initializeMemory();
-    cuda_utils::copyDataToCudaArray(hostRgbPtr, rows, cols, texArray);
+    hip_utils::copyDataToHipArray(hostRgbPtr, rows, cols, texArray);
 }
 
 // delete all buffers
@@ -37,16 +37,16 @@ void CASImpl::destroyBuffers() {
         if (resource)
             deleter(resource);
     };
-    destroy(casOutputBuffer, cudaFree);
-    destroy(texObj, cudaDestroyTextureObject);
-    destroy(texArray, cudaFreeArray);
-    destroy(hostOutputBuffer, cudaFreeHost);
+    destroy(casOutputBuffer, hipFree);
+    destroy(texObj, hipDestroyTextureObject);
+    destroy(texArray, hipFreeArray);
+    destroy(hostOutputBuffer, hipHostFree);
 }
 
 // calls CAS kernel on the texture data, return sharpened image as unsigned char buffer (pinned memory of this CAS instance)
 // overloaded method to be used when the texture data is already set (get away with one Host to Device copy if we want to sharpen the same image)
 const unsigned char* CASImpl::sharpenImage(const int casMode, const float sharpenStrength, const float contrastAdaption) {
-    const dim3 gridSize = cuda_utils::gridSizeCalculate(blockSize, rows, cols);
+    const dim3 gridSize = hip_utils::gridSizeCalculate(blockSize, rows, cols);
     // enqueue CAS kernel with Alpha channel output or not, or RGB planar or interleaved output based on param casMode
     if (hasAlpha && casMode == PLANAR_RGB)
         cas<unsigned char, true, PLANAR_RGB><<<gridSize, blockSize>>>(texObj, sharpenStrength, contrastAdaption, reinterpret_cast<unsigned char*>(casOutputBuffer), rows, cols);
@@ -58,6 +58,6 @@ const unsigned char* CASImpl::sharpenImage(const int casMode, const float sharpe
         cas<uchar3, false, INTERLEAVED_RGBA><<<gridSize, blockSize>>>(texObj, sharpenStrength, contrastAdaption, reinterpret_cast<uchar3*>(casOutputBuffer), rows, cols);
 
     // copy from GPU to HOST
-    cudaMemcpy(hostOutputBuffer, casOutputBuffer, totalBytes, cudaMemcpyDeviceToHost);
+    hipMemcpy(hostOutputBuffer, casOutputBuffer, totalBytes, hipMemcpyDeviceToHost);
     return hostOutputBuffer;
 }

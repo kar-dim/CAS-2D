@@ -1,13 +1,13 @@
 #pragma once
-#include <cuda_runtime.h>
+#include <hip/hip_runtime.h>
 
 enum CASMode { PLANAR_RGB, INTERLEAVED_RGBA };
 
 // Main class responsible for managing CUDA memory and calling the CAS kernel to sharpen the input image
 class CASImpl {
   private:
-    cudaTextureObject_t texObj;
-    cudaArray* texArray;
+    hipTextureObject_t texObj;
+    hipArray_t texArray;
     void* casOutputBuffer;
     unsigned char* hostOutputBuffer;
     bool hasAlpha;

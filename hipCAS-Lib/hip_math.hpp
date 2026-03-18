@@ -1,6 +1,12 @@
 #pragma once
-#include "cuda_runtime.h"
-#include <cuda_fp16.h>
+#include "hip/hip_runtime.h"
+#include <hip/hip_fp16.h>
+
+#if defined(__HIP_PLATFORM_AMD__)
+// HIP is missing for AMD half2 min/max intrinsics
+inline __device__ half2 __hmin2(const half2 a, const half2 b) { return __halves2half2(__hmin(__low2half(a), __low2half(b)), __hmin(__high2half(a), __high2half(b))); }
+inline __device__ half2 __hmax2(const half2 a, const half2 b) { return __halves2half2(__hmax(__low2half(a), __low2half(b)), __hmax(__high2half(a), __high2half(b))); }
+#endif
 
 // RGB half values
 // pack one half2 for vectorized 2-way operations, and one half for the last pixel
@@ -75,9 +81,9 @@ inline __device__ half2 hclamp2(const half2 f, const half2 a, const half2 b) { r
 
 // clamp half3 values to [0,1]
 inline __device__ half3 saturateh(const half3 x) {
-    const half2 zero = half2{CUDART_ZERO_FP16, CUDART_ZERO_FP16};
-    const half2 one = half2{CUDART_ONE_FP16, CUDART_ONE_FP16};
-    return make_half3(hclamp2(x.x, zero, one), hclamp(x.y, CUDART_ZERO_FP16, CUDART_ONE_FP16));
+    const half2 zero = half2{HIPRT_ZERO_FP16, HIPRT_ZERO_FP16};
+    const half2 one = half2{HIPRT_ONE_FP16, HIPRT_ONE_FP16};
+    return make_half3(hclamp2(x.x, zero, one), hclamp(x.y, HIPRT_ZERO_FP16, HIPRT_ONE_FP16));
 }
 
 // faster linear interpolation by using FMA operations
@@ -86,7 +92,19 @@ inline __device__ half3 lerph(const half3 v0, const half3 v1, const half t) {
 }
 
 // converts a half in the range [0,1] to an unsigned char in the range [0,255]
-inline __device__ unsigned char halfToUchar(const half value) { return __half2uchar_rz(value * 255.0f); }
+inline __device__ unsigned char halfToUchar(const half value) {
+#if defined(__HIP_PLATFORM_NVIDIA__)
+    // native and fast PTX F2I.U8 instruction, not supported by HIP yet
+    // NOTE: __half2uchar_rz(value * 255.0f) is the optimal, but for CUDA 12.4 it applies its slow path (fixed in 13.1)
+    const half scaled = value * __float2half(255.0f);
+    unsigned int res;
+    asm("cvt.rzi.u8.f16 %0, %1;" : "=r"(res) : "h"(__half_as_short(scaled)));
+    return static_cast<unsigned char>(res);
+#else
+    // AMD fallback
+    return static_cast<unsigned char>(value * 255.0f);
+#endif
+}
 
 // Convert a linear RGB value to sRGB value
 inline __device__ half sRGB(const half linearColor) {

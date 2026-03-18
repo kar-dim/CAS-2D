@@ -1,10 +1,7 @@
+#include "CASImpl.hpp"
 #include "include/CASLibWrapper.h"
 #include <exception>
-#if defined(_USE_CUDA_)
-#include "CASImpl.cuh"
-#elif defined(_USE_OPENCL_)
-#include "CASImpl.hpp"
-#endif
+
 // Implementation of the CAS DLL API
 extern "C" {
 

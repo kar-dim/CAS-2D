@@ -1,9 +1,14 @@
 #pragma once
+#ifdef __HIP_DEVICE_COMPILE__
+#define CAS_API
+#else
 #ifdef CAS_EXPORT
 #define CAS_API __declspec(dllexport)
 #else
 #define CAS_API __declspec(dllimport)
 #endif
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,7 +1,7 @@
 #pragma once
-#include <cuda_runtime.h>
-#include <cuda_fp16.h>
-#include "helper_math.h"
+#include "hip/hip_runtime.h"
+#include "hip_math.hpp"
+#include <hip/hip_fp16.h>
 
 constexpr int RGB = 0;
 constexpr int RGBA = 1;
@@ -17,7 +17,7 @@ constexpr int RGBA = 1;
 //		 width: width of the input texture
 // Output: None
 template <class T, bool hasAlpha, int casMode>
-__global__ void cas(cudaTextureObject_t texObj, const float sharpenStrength, const float contrastAdaption, T* casOutput, const unsigned int height, const unsigned int width) {
+__global__ void cas(hipTextureObject_t texObj, const float sharpenStrength, const float contrastAdaption, T* casOutput, const unsigned int height, const unsigned int width) {
     const int x = blockIdx.x * blockDim.x + threadIdx.x;
     const int y = blockIdx.y * blockDim.y + threadIdx.y;
     const int outputIndex = (y * width) + x;
