@@ -96,9 +96,8 @@ inline __device__ unsigned char halfToUchar(const half value) {
 #if defined(__HIP_PLATFORM_NVIDIA__)
     // native and fast PTX F2I.U8 instruction, not supported by HIP yet
     // NOTE: __half2uchar_rz(value * 255.0f) is the optimal, but for CUDA 12.4 it applies its slow path (fixed in 13.1)
-    const half scaled = value * __float2half(255.0f);
     unsigned int res;
-    asm("cvt.rzi.u8.f16 %0, %1;" : "=r"(res) : "h"(__half_as_short(scaled)));
+    asm("cvt.rzi.u8.f16 %0, %1;" : "=r"(res) : "h"(__half_as_short(value * 255.0f)));
     return static_cast<unsigned char>(res);
 #else
     // AMD fallback
