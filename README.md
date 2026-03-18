@@ -23,10 +23,10 @@ NOTE: This re-implementation is inspired by the [ReShade](https://reshade.me/) p
 
 1. **CAS Implementation**. CAS is implemented as a DLL project and provides a C-style interface for interaction. Here is how you can build and run programs that depend on CAS:
     - For Building:
-    Ensure the following files are available in your output directory: ```hipCAS-Lib.dll``` , ```hipCAS-Lib.lib``` and ```CASLibWrapper.h``` (for interacting with the DLL)
+    Ensure the file ```hipCAS-Lib.dll``` is found either in the same directory as the executable, or available in the system PATH. You must also link against the file ```hipCAS-Lib.lib```, and finally include ```CASLibWrapper.h``` for interacting with the DLL functions.
     - For Running:
-    Only the ```hipCAS-Lib.dll``` is required. It must be either be present in the same directory as the executable, or available in the system PATH.
-2. **GUI Application**. This simple GUI project aims to showcase how to interact with the CAS DLL in order to sharpen images.
+    Only the ```hipCAS-Lib.dll``` file is required to be present.
+2. **GUI Application**. This simple GUI project aims to showcase how to interact with the CAS DLL in order to sharpen images. It automatically has ```Post-Build Events``` that copy the required DLL, and also link against the DLL's import library (.lib) file, while also including the header file.
 
 ## Build
 
@@ -40,7 +40,7 @@ The solution provides multiple build configurations, each targeting a specific b
 | `CUDA_Release`   | CUDA        | CUDA backend. Built by nvcc. |
 | `CUDA_Debug`     | CUDA        | CUDA backend (debug build). |
 
-1. HIP ROCm SDK v7.1 is used.
+1. HIP Windows ROCm SDK v7.1 is used.
 2. For the CUDA CAS DLL Implementation, ```CUDA Toolkit 12.4``` is required, in order to link with the CUDA libraries and to include the CUDA header files. Higher versions **are not supported** by ROCm v7.1. The Environment Variable ```CUDA_PATH_V12_4``` should be defined (automatically when installing CUDA toolkit, usually with this default value: ```C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.4```).
 3. The Qt GUI application requires Qt MSVC (tested with version 6.8.0) in order to use the Qt framework.
 4. When building the GUI project, the tool ```windeployqt``` is called in order to copy the required Qt dependencies for running the application. Also, the DLL is copied in the GUI application's output folder.
