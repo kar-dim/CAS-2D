@@ -8,14 +8,14 @@ constexpr int RGBA = 1;
 
 // Main CAS kernel
 // Template: hasAlpha: whether the input image has an alpha channel
-//			casMode: whether the output image should be written as interleaved RGBA or planar RGB
-// Input: texObj: input (sRGB) texture object
-//		 sharpenStrength: sharpening strength
-//		 contrastAdaption: contrast adaption
-//		 casOutput: output RGB(A) interleaved
-//		 height: height of the input texture
-//		 width: width of the input texture
-// Output: None
+//			 casMode: whether the output image should be written as interleaved RGBA or planar RGB
+// Params:   texObj: input (sRGB) texture object
+//		     sharpenStrength: sharpening strength
+//		     contrastAdaption: contrast adaption
+//		     casOutput: output buffer
+//		     height: height of the input texture
+//		     width: width of the input texture
+// Returns:  None
 template <class T, bool hasAlpha, int casMode>
 __global__ void cas(hipTextureObject_t texObj, const float sharpenStrength, const float contrastAdaption, T* casOutput, const unsigned int height, const unsigned int width) {
     const int x = blockIdx.x * blockDim.x + threadIdx.x;

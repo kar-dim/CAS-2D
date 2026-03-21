@@ -44,7 +44,6 @@ void CASImpl::destroyBuffers() {
 }
 
 // calls CAS kernel on the texture data, return sharpened image as unsigned char buffer (pinned memory of this CAS instance)
-// overloaded method to be used when the texture data is already set (get away with one Host to Device copy if we want to sharpen the same image)
 const unsigned char* CASImpl::sharpenImage(const int casMode, const float sharpenStrength, const float contrastAdaption) {
     const dim3 gridSize = hip_utils::gridSizeCalculate(blockSize, rows, cols);
     // enqueue CAS kernel with Alpha channel output or not, or RGB planar or interleaved output based on param casMode
