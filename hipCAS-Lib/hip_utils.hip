@@ -10,8 +10,7 @@ dim3 gridSizeCalculate(const dim3 blockSize, const int rows, const int cols) { r
 hipArray_t hipMallocArray(const std::size_t cols, const std::size_t rows) {
     hipArray_t arr;
     auto channelDescriptor = hipCreateChannelDesc<uchar4>();
-    hipExtent extent = make_hipExtent(cols, rows, 1); // Single-layer array
-    hipMalloc3DArray(&arr, &channelDescriptor, extent, 0);
+    hipMallocArray(&arr, &channelDescriptor, cols, rows, hipArrayDefault);
     return arr;
 }
 
@@ -31,10 +30,9 @@ hipTextureDesc createTextureDescriptor() {
     hipTextureDesc texDesc{};
     texDesc.addressMode[0] = hipAddressModeBorder;
     texDesc.addressMode[1] = hipAddressModeBorder;
-    texDesc.addressMode[2] = hipAddressModeClamp;
-    texDesc.sRGB = 1;
+    texDesc.sRGB = 1; // do automatic sRGB to linear
     texDesc.filterMode = hipFilterModePoint;
-    texDesc.readMode = hipReadModeNormalizedFloat; // Read as float in [0,1]
+    texDesc.readMode = hipReadModeNormalizedFloat; // read as float in [0,1]
     texDesc.normalizedCoords = 0;
     return texDesc;
 }
@@ -57,12 +55,7 @@ std::pair<hipTextureObject_t, hipArray_t> createTextureData(const unsigned int r
 
 // copy Host data to Device Array
 void copyDataToHipArray(const unsigned char* data, const unsigned int rows, const unsigned int cols, hipArray_t hipArray) {
-    hipMemcpy3DParms copyParams{};
-    copyParams.kind = hipMemcpyHostToDevice;
-    copyParams.dstArray = hipArray;
-    // Interleaved data in packed [r, g, b, 0, r, g, b, 0...] format
-    copyParams.srcPtr = make_hipPitchedPtr((void*)data, cols * 4 * sizeof(unsigned char), cols, rows);
-    copyParams.extent = make_hipExtent(cols, rows, 1); // Depth is 1 because all channels are interleaved per pixel
-    hipMemcpy3D(&copyParams);
+    const size_t widthBytes = cols * 4 * sizeof(unsigned char);
+    hipMemcpy2DToArray(hipArray, 0, 0, data, widthBytes, widthBytes, rows, hipMemcpyHostToDevice);
 }
 } // namespace hip_utils

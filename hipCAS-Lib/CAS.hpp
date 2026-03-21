@@ -29,7 +29,7 @@ __global__ void cas(hipTextureObject_t texObj, const float sharpenStrength, cons
     //  a b c
     //  d(e)f
     //  g h i
-    const half4 currentPixel = make_half4(tex3D<float4>(texObj, x, y, 0));
+    const half4 currentPixel = make_half4(tex2D<float4>(texObj, x, y));
     // speedup if alpha is zero -> just write the alpha value only and return
     if constexpr (hasAlpha) {
         if (__high2half(currentPixel.y) == __float2half(0.0f)) {
@@ -41,14 +41,14 @@ __global__ void cas(hipTextureObject_t texObj, const float sharpenStrength, cons
         }
     }
     const half3 e = make_half3(currentPixel);
-    const half3 a = make_half3(tex3D<float4>(texObj, x - 1, y - 1, 0));
-    const half3 b = make_half3(tex3D<float4>(texObj, x, y - 1, 0));
-    const half3 c = make_half3(tex3D<float4>(texObj, x + 1, y - 1, 0));
-    const half3 d = make_half3(tex3D<float4>(texObj, x - 1, y, 0));
-    const half3 f = make_half3(tex3D<float4>(texObj, x + 1, y, 0));
-    const half3 g = make_half3(tex3D<float4>(texObj, x - 1, y + 1, 0));
-    const half3 h = make_half3(tex3D<float4>(texObj, x, y + 1, 0));
-    const half3 i = make_half3(tex3D<float4>(texObj, x + 1, y + 1, 0));
+    const half3 a = make_half3(tex2D<float4>(texObj, x - 1, y - 1));
+    const half3 b = make_half3(tex2D<float4>(texObj, x, y - 1));
+    const half3 c = make_half3(tex2D<float4>(texObj, x + 1, y - 1));
+    const half3 d = make_half3(tex2D<float4>(texObj, x - 1, y));
+    const half3 f = make_half3(tex2D<float4>(texObj, x + 1, y));
+    const half3 g = make_half3(tex2D<float4>(texObj, x - 1, y + 1));
+    const half3 h = make_half3(tex2D<float4>(texObj, x, y + 1));
+    const half3 i = make_half3(tex2D<float4>(texObj, x + 1, y + 1));
 
     // Soft min and max.
     //  a b c             b
