@@ -193,8 +193,7 @@ void MainWindow::saveImage() {
         QMessageBox::information(this, "Save Image", "Image saved successfully.");
 }
 
-// event handler when a Slider is changed, checks if the timer is active, skip redundant (too fast) cuda calls
-// else, it restarts the timer
+// event handler when a slider is changed, checks if the timer is active, skip redundant (too fast) HIP calls, else, it restarts the timer
 void MainWindow::sliderValueChanged() {
     if (throttleTimer->isActive())
         return;

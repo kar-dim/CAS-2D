@@ -3,7 +3,7 @@
 
 enum CASMode { PLANAR_RGB, INTERLEAVED_RGBA };
 
-// Main class responsible for managing CUDA memory and calling the CAS kernel to sharpen the input image
+// Main class responsible for managing HIP memory and calling the CAS kernel to sharpen the input image
 class CASImpl {
   private:
     hipTextureObject_t texObj;
