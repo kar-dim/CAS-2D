@@ -50,9 +50,9 @@ The solution provides multiple build configurations, each targeting a specific b
 
 1. Launch the application.
 2. Use the **Open Image** from the File menu to select an image file from the system.
-3. Adjust parameters as desired through the user interface.
+3. Adjust parameters through the user interface. **NOTE**: Sharpen strength parameter allows values which exceed AMD's maximum recommended in order to help in some edge cases, but in most cases it causes darkening and side effects. A value of 10~20% of the slider's maximum suffices for most cases. 
 4. The sharpening is applied in realtime each time a parameter is changed, to allow the user to view the updated image with various configurations.
-5. (Optional) Save the processed image using the **Save Image** from the File menu.
+5. (Optional) Save the processed image using the **Save Image** from the file menu.
 
 ## GUI Samples
 Original image            |  Sharpened image
