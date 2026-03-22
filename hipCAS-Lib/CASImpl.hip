@@ -34,8 +34,10 @@ void CASImpl::reinitializeMemory(const bool hasAlpha, const unsigned char* hostR
 // delete all buffers
 void CASImpl::destroyBuffers() {
     static constexpr auto destroy = [](auto& resource, auto& deleter) {
-        if (resource)
+        if (resource) {
             deleter(resource);
+            resource = {};
+        }
     };
     destroy(casOutputBuffer, hipFree);
     destroy(texObj, hipDestroyTextureObject);

@@ -27,7 +27,7 @@
 #include <QWidget>
 #include <type_traits>
 
-#define CLAMP(x) qBound(0.0f, x / 100.0f, 1.0f)
+inline static float clampSlider(const int sliderValue, const float maxLimit) { return qBound(0.0f, static_cast<float>(sliderValue) / 100.0f, maxLimit); }
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), sharpenStrength(new QSlider(Qt::Horizontal)), contrastAdaption(new QSlider(Qt::Horizontal)), imageView(new ZoomableLabel), scrollArea(new QScrollArea),
@@ -45,8 +45,8 @@ MainWindow::MainWindow(QWidget* parent)
     connect(throttleTimer, &QTimer::timeout, this, &MainWindow::performSharpening);
 
     // setup sliders
-    setupSlider(sharpenStrength, sharpenStrengthLabel, 0);
-    setupSlider(contrastAdaption, contrastAdaptionLabel, 100);
+    setupSlider(sharpenStrength, sharpenStrengthLabel, 0, 1000);
+    setupSlider(contrastAdaption, contrastAdaptionLabel, 100, 100);
     // setup file menu
     setupMenu();
     // setup main image view
@@ -59,9 +59,9 @@ MainWindow::MainWindow(QWidget* parent)
 MainWindow::~MainWindow() { CAS_destroy(casObj); }
 
 // setup CAS parameter sliders
-void MainWindow::setupSlider(QSlider* slider, QLabel* label, const int value) const {
+void MainWindow::setupSlider(QSlider* slider, QLabel* label, const int value, const int maxValue) const {
     // Setup slider properties (QSlider and correspinding QLabel)
-    slider->setRange(0, 100);
+    slider->setRange(0, maxValue);
     slider->setValue(value);
     label->setFixedWidth(130);
     WidgetUtils::setVisibility(false, slider, label);
@@ -136,7 +136,7 @@ void MainWindow::performSharpening() {
     // apply CAS from DLL and update UI
     const int sharpenedImageChannels = userImageHasAlpha ? 4 : 3;
     const auto sharpenedImageFormat = userImageHasAlpha ? QImage::Format_RGBA8888 : QImage::Format_RGB888;
-    const uchar* casData = CAS_sharpenImage(casObj, 1, CLAMP(sharpenStrength->value()), CLAMP(contrastAdaption->value()));
+    const uchar* casData = CAS_sharpenImage(casObj, 1, clampSlider(sharpenStrength->value(), 10.0f), clampSlider(contrastAdaption->value(), 1.0f));
     // check if CAS returned valid data
     if (!casData) {
         QMessageBox::critical(this, "Error", "CAS failed to process the image.");

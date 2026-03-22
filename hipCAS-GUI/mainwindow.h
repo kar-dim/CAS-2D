@@ -38,7 +38,7 @@ class MainWindow : public QMainWindow {
   private:
     const QString imageDialogFilterText{"Images (*.png *.jpg *.bmp *.webp *.tiff)"};
     void setupMenu();
-    void setupSlider(QSlider* slider, QLabel* label, const int value) const;
+    void setupSlider(QSlider* slider, QLabel* label, const int value, const int maxValue = 100) const;
     void setupImageView();
     void setupMainWidget();
     void addSliderLayout(QVBoxLayout* mainLayout, QSlider* slider, QLabel* label);
