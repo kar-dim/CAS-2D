@@ -13,7 +13,7 @@ It is used in 3D Graphics frameworks like DX12 and Vulkan, and provides a mixed 
   <img width="512" height="288" alt="rocm" src="https://github.com/user-attachments/assets/d50056dd-cef8-4777-ae8f-d5f01b0decf6" />
 </p>
 
-This project implements CAS as compute kernel, using AMD HIP (ROCm). The main reasons for porting CAS to HIP are:
+This project implements CAS as compute kernel, using AMD HIP (ROCm) in order to execute it on AMD or NVIDIA GPUs. The main reasons for porting CAS to HIP are:
 1. General purpose. Because CAS is technically a filter, it can also be used for sharpening static images (like local files from disk). The original CAS filter works only in 3D graphics frameworks.
 2. Speed. By implementing the CAS algorithm efficiently in compute frameworks, we can expect major speedups compared to CPU implementations by leveraging the GPU's high performance in parallel problems.
 
@@ -35,9 +35,9 @@ The solution provides multiple build configurations, each targeting a specific b
 
 | Configuration    | Backend     | Notes                                       |
 |------------------|-------------|---------------------------------------------|
-| `AMD_Release`    | AMD clang   | AMD backend. Built by AMD's clang compiler to natively run CUDA code for AMD GPUs. |
+| `AMD_Release`    | AMD clang   | AMD backend. Built by AMD's clang compiler to natively run CUDA code on AMD GPUs. |
 | `AMD_Debug`      | AMD clang   | AMD backend (debug build). |
-| `CUDA_Release`   | CUDA        | CUDA backend. Built by nvcc. |
+| `CUDA_Release`   | CUDA        | CUDA backend. Built by nvcc. Runs only on NVIDIA GPUs. |
 | `CUDA_Debug`     | CUDA        | CUDA backend (debug build). |
 
 1. HIP Windows ROCm SDK v7.1 is used.
@@ -57,10 +57,5 @@ The solution provides multiple build configurations, each targeting a specific b
 ## GUI Samples
 Original image            |  Sharpened image
 :-------------------------:|:-------------------------:
-![FidelityFX-CAS-CUDA-GUI_y8DbO9k5dL](https://github.com/user-attachments/assets/5343a3c1-788b-4d42-b5d2-851357001e9c)  |  ![FidelityFX-CAS-CUDA-GUI_UomvduN1Rm](https://github.com/user-attachments/assets/b31b7cfe-1546-4cfc-a677-76d6ca9694dc)
-![FidelityFX-CAS-CUDA-GUI_jUkSm8z70Q](https://github.com/user-attachments/assets/d5fb820b-a71e-4425-ac1f-a7b5d6bc3191)  |  ![FidelityFX-CAS-CUDA-GUI_a6DUhPrKd0](https://github.com/user-attachments/assets/0edbc210-55f0-49fd-b2b0-f3a5f62a8f2e)
-
-
-## Prerequisites/Dependencies
-
-- **NVIDIA GPU**: For the CUDA CAS DLL Implementation, an NVIDIA GPU is required in order to use the CAS DLL. The OpenCL implementation works for most GPU Vendors (NVIDIA, AMD, INTEL).
+![hipCAS-GUI_cjNBfnQfcG](https://github.com/user-attachments/assets/d651891a-055a-4b4a-8a0e-ad3491676a63) | ![hipCAS-GUI_ASEq2fDmhG](https://github.com/user-attachments/assets/c8cc9ace-b72f-45a6-b0cb-484f363c18f2)
+![hipCAS-GUI_HJeBhN7e6S](https://github.com/user-attachments/assets/3e5b5dcb-65ab-4305-8746-636d16e0065f) | ![hipCAS-GUI_IkltwiEL0s](https://github.com/user-attachments/assets/fd20280b-fbbe-4aba-ab8d-2d8be366dbf6)
