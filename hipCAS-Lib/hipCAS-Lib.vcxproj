@@ -26,12 +26,8 @@
     <ClInclude Include="include\CASLibWrapper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CASImpl.hip">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <ClCompile Include="hip_utils.hip">
-      <FileType>Document</FileType>
-    </ClCompile>
+    <ClCompile Include="CASImpl.hip.cpp" />
+    <ClCompile Include="hip_utils.hip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CASLibWrapper.cpp" />

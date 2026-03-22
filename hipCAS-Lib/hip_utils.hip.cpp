@@ -9,13 +9,13 @@ dim3 gridSizeCalculate(const dim3 blockSize, const int rows, const int cols) { r
 // simple wrapper of hipMallocArray to reduce boilerplate
 hipArray_t hipMallocArray(const std::size_t cols, const std::size_t rows) {
     hipArray_t arr;
-    auto channelDescriptor = hipCreateChannelDesc<uchar4>();
+    const auto channelDescriptor = hipCreateChannelDesc<uchar4>();
     hipMallocArray(&arr, &channelDescriptor, cols, rows, hipArrayDefault);
     return arr;
 }
 
 // creates a hipResourceDesc from a specified hipArray
-hipResourceDesc createResourceDescriptor(hipArray_t hipArray) {
+hipResourceDesc createResourceDescriptor(const hipArray_t hipArray) {
     hipResourceDesc resDesc{};
     resDesc.resType = hipResourceTypeArray;
     resDesc.res.array.array = hipArray;
@@ -46,11 +46,8 @@ hipTextureObject_t createTextureObject(const hipResourceDesc& pResDesc, const hi
 
 // create the hipArray and the textureObject binded to this array.
 std::pair<hipTextureObject_t, hipArray_t> createTextureData(const unsigned int rows, const unsigned int cols) {
-    hipArray_t arr = hip_utils::hipMallocArray(cols, rows);
-    hipResourceDesc resDesc = hip_utils::createResourceDescriptor(arr);
-    hipTextureDesc texDesc = hip_utils::createTextureDescriptor();
-    hipTextureObject_t texObj = hip_utils::createTextureObject(resDesc, texDesc);
-    return std::make_pair(texObj, arr);
+    const hipArray_t arr = hipMallocArray(cols, rows);
+    return std::make_pair(createTextureObject(createResourceDescriptor(arr), createTextureDescriptor()), arr);
 }
 
 // copy Host data to Device Array
