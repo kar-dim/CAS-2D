@@ -1,15 +1,10 @@
 #include "CASImpl.hpp"
 #include "include/CASLibWrapper.h"
-#include <exception>
 
 // Implementation of the CAS DLL API
 extern "C" {
 
-CAS_API void* CAS_initialize() {
-    try {
-        return new CASImpl();
-    } catch (const std::exception&) { return nullptr; }
-}
+CAS_API void* CAS_initialize() { return new CASImpl(); }
 
 CAS_API void CAS_supplyImage(void* casImpl, const unsigned char* inputImage, const int hasAlpha, const unsigned int rows, const unsigned int cols) {
     CASImpl* cas = static_cast<CASImpl*>(casImpl);

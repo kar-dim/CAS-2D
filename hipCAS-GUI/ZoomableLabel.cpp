@@ -1,4 +1,4 @@
-#include <Qlabel>
+#include <QLabel>
 #include <QPixmap>
 #include <Qt>
 #include <QtMinMax>
