@@ -23,11 +23,13 @@ void CASImpl::initializeMemory() {
 
 // destory and re-initialize memory objects
 void CASImpl::reinitializeMemory(const bool hasAlpha, const unsigned char* hostRgbPtr, const unsigned int rows, const unsigned int cols) {
-    this->rows = rows;
-    this->cols = cols;
-    this->hasAlpha = hasAlpha;
-    destroyBuffers();
-    initializeMemory();
+    if (this->rows != rows || this->cols != cols || this->hasAlpha != hasAlpha) {
+        this->rows = rows;
+        this->cols = cols;
+        this->hasAlpha = hasAlpha;
+        destroyBuffers();
+        initializeMemory();
+    }
     hip_utils::copyDataToHipArray(hostRgbPtr, rows, cols, texArray);
 }
 
